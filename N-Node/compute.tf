@@ -1,0 +1,155 @@
+resource "oci_core_instance" "WorkerNode" {
+  count = "${var.WorkerNodeCount}"
+  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.AD - 1],"name")}"
+  compartment_id      = "${var.compartment_ocid}"
+  display_name        = "CF Worker ${format("%01d", count.index+1)}"
+  hostname_label      = "CF-Worker-${format("%01d", count.index+1)}"
+  shape               = "${var.WorkerInstanceShape}"
+  subnet_id	      = "${oci_core_subnet.public.*.id[var.AD - 1]}"
+
+  source_details {
+    source_type = "image"
+    source_id = "${var.InstanceImageOCID[var.region]}"
+  }
+
+  metadata {
+    ssh_authorized_keys = "${var.ssh_public_key}"
+    user_data = "${base64encode(data.template_file.boot_script.rendered)}"
+  }
+
+  timeouts {
+    create = "30m"
+  }
+  
+  provisioner "file" {
+      source = "../scripts/firewall-reload.sh"
+      destination = "/home/opc/firewall-reload.sh"
+      connection {
+        agent = false
+        timeout = "10m"
+        host = "${self.public_ip}"
+        user = "opc"
+        private_key = "${var.ssh_private_key}"
+    }
+  }
+  
+  provisioner "remote-exec" {
+      connection {
+        agent = false
+        timeout = "10m"
+        host = "${self.public_ip}"
+        user = "opc"
+        private_key = "${var.ssh_private_key}"
+      }
+      inline = [
+        "chmod +x /home/opc/*.sh",
+        "sudo /home/opc/firewall-reload.sh"
+        ]
+  }
+
+}
+
+resource "oci_core_instance" "BrokerNode" {
+  count		      = "${var.BrokerNodeCount}"
+  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.AD - 1],"name")}"
+  compartment_id      = "${var.compartment_ocid}"
+  display_name        = "CF Broker ${format("%01d", count.index+1)}"
+  hostname_label      = "CF-Broker-${format("%01d", count.index+1)}"
+  shape               = "${var.BrokerInstanceShape}"
+  subnet_id           = "${oci_core_subnet.public.*.id[var.AD - 1]}"
+
+  source_details {
+    source_type = "image"
+    source_id = "${var.InstanceImageOCID[var.region]}"
+  }
+
+  metadata {
+    ssh_authorized_keys = "${var.ssh_public_key}"
+    user_data = "${base64encode(data.template_file.boot_script.rendered)}"
+  }
+
+  timeouts {
+    create = "30m"
+  }
+
+  provisioner "file" {
+      source = "../scripts/firewall-reload.sh"
+      destination = "/home/opc/firewall-reload.sh"
+      connection {
+        agent = false
+        timeout = "10m"
+        host = "${self.public_ip}"
+        user = "opc"
+        private_key = "${var.ssh_private_key}"
+    }
+  }
+
+  provisioner "remote-exec" {
+      connection {
+        agent = false
+        timeout = "10m"
+        host = "${self.public_ip}"
+        user = "opc"
+        private_key = "${var.ssh_private_key}"
+      }
+      inline = [
+        "chmod +x /home/opc/*.sh",
+        "sudo /home/opc/firewall-reload.sh"
+        ]
+  }
+
+}
+
+
+resource "oci_core_instance" "ZookeeperNode" {
+  count               = "${var.ZookeeperNodeCount}"
+  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.AD - 1],"name")}"
+  compartment_id      = "${var.compartment_ocid}"
+  display_name        = "CF Zookeeper ${format("%01d", count.index+1)}"
+  hostname_label      = "CF-Zookeeper-${format("%01d", count.index+1)}"
+  shape               = "${var.ZookeeperInstanceShape}"
+  subnet_id           = "${oci_core_subnet.public.*.id[var.AD - 1]}"
+
+  source_details {
+    source_type = "image"
+    source_id = "${var.InstanceImageOCID[var.region]}"
+  }
+
+  metadata {
+    ssh_authorized_keys = "${var.ssh_public_key}"
+    user_data = "${base64encode(data.template_file.boot_script.rendered)}"
+
+  }
+
+  timeouts {
+    create = "30m"
+  }
+
+  provisioner "file" {
+      source = "../scripts/firewall-reload.sh"
+      destination = "/home/opc/firewall-reload.sh"
+      connection {
+        agent = false
+        timeout = "10m"
+        host = "${self.public_ip}"
+        user = "opc"
+        private_key = "${var.ssh_private_key}"
+    }
+  }
+
+  provisioner "remote-exec" {
+      connection {
+        agent = false
+        timeout = "10m"
+        host = "${self.public_ip}"
+        user = "opc"
+        private_key = "${var.ssh_private_key}"
+      }
+      inline = [
+        "chmod +x /home/opc/*.sh",
+        "sudo /home/opc/firewall-reload.sh"
+        ]
+  }
+
+}
+

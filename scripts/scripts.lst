@@ -1,0 +1,6 @@
+compute-heap-opts
+cp-deploy.sh
+cp-install.sh
+prep-cp-instance.sh
+prepare-disks.sh
+iscsi.sh
