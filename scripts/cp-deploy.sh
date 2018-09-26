@@ -30,16 +30,16 @@
 #		support the Linux package installs {deb/rpm} to /usr)
 #
 #	List of cluster hosts by role (/tmp/cphosts)
-#		/tmp/brokers, /tmp/zookeepers, /tmp/workers
+#		/home/opc/brokers, /home/opc/zookeepers, /home/opc/workers
 #			NOTE: for some cluster configurations (eg a simple 1-node cluster),
 #			all 3 files will specify the same server.
 #
 # Final state
 #	Core services configured and running
-#		Zookeeper on all nodes in /tmp/zookeepers
-#		Kafka on all nodes in /tmp/brokers
+#		Zookeeper on all nodes in /home/opc/zookeepers
+#		Kafka on all nodes in /home/opc/brokers
 #
-#	Confluent services deployed on nodes defined by /tmp/workers
+#	Confluent services deployed on nodes defined by /home/opc/workers
 #		Control-Center service runs on worker0
 #		SchemaRegistry service runs on worker1 (or worker 0 if numWorkers == 1)
 #		RestProxy and Connect run worker1 through workerN (or worker0 if numWorkers == 1)
@@ -97,7 +97,7 @@ update_kadmin_user() {
 	if [ -z "$KADMIN_PASSWD" ] ; then
 		grep -q -i "Enabled" /tmp/csecurity 2> /dev/null
 		if [ $? -eq 0 ] ; then
-			broker0_instance_id=$(head -1 /tmp/brokers | awk '{print $3}')
+			broker0_instance_id=$(head -1 /home/opc/brokers | awk '{print $3}')
 			KADMIN_PASSWD=${broker0_instance_id:-C0nfluent}
 		else
 			instance_id=$(curl -f -s $murl_top/id 2> /dev/null)
@@ -126,8 +126,8 @@ patch_confluent_installation() {
 		CP_JAVA_DIR=/usr/share/java
 	fi
 
-		# Known problem with 3.2.2 ... conflicting versions of servlet-api jar
-    echo "Applying servlet-api patch to 3.2.2 (if necessary)" | tee -a $LOG
+	# Known problem with 3.2.2 ... conflicting versions of servlet-api jar
+    	echo "Applying servlet-api patch to 3.2.2 (if necessary)" | tee -a $LOG
 	if [ -f ${CP_JAVA_DIR}/kafka/javax.servlet-api-3.*.jar ] ; then
     	echo "  removing servlet-api-2*.jar files from kafka-connect-* libraries" | tee -a $LOG
 		rm -f ${CP_JAVA_DIR}/kafka-connect-*/servlet-api-2*.jar
@@ -745,10 +745,10 @@ wait_for_brokers() {
     BROKER_WAIT=${1:-300}
     STIME=5
 
-		# Now that we know the ZK cluster is on line, we can check the number
-		# of registered brokers.  Ideally, we'd just look for "enough" brokers,
-		# hence the "targetBrokers" logic below
-		#
+	# Now that we know the ZK cluster is on line, we can check the number
+	# of registered brokers.  Ideally, we'd just look for "enough" brokers,
+	# hence the "targetBrokers" logic below
+	#
 	local numBrokers=`echo ${brokers//,/ } | wc -w`
 	local targetBrokers=$numBrokers
 	[ $targetBrokers -gt 5 ] && targetBrokers=5
@@ -801,6 +801,10 @@ start_core_services() {
 			$CP_BIN_DIR/zookeeper-server-start -daemon $ZK_CFG
 		fi
 	fi
+	
+	if [ $zkStartOnly -eq 1 ] ; then
+                echo "Running through cp-deploy.sh for zookeeper services only"
+        else
 
 	echo "$brokers" | grep -q -w "$THIS_HOST"
 	if [ $? -eq 0 ] ; then
@@ -821,6 +825,8 @@ start_core_services() {
 			$CP_BIN_DIR/kafka-server-start -daemon $BROKER_CFG
 		fi
 	fi
+	fi
+
 }
 
 # This function handles the launching of worker
@@ -915,9 +921,9 @@ start_worker_services() {
 }
 
 start_control_center() {
-		# Control Center on first worker only
-		# Control Center is VERY FRAGILE on start-up,
-		#	so we'll isolate the start here in case we need to restart.
+	# Control Center on first worker only
+	# Control Center is VERY FRAGILE on start-up,
+	#	so we'll isolate the start here in case we need to restart.
 	#if [ "${workers%%,*}" = $THIS_HOST ] ; then
 	echo "${workers%%,*}" | grep -q -w "$THIS_HOST"
 	if [ $? -eq 0 ] ; then
@@ -1077,23 +1083,28 @@ main()
         echo "  ERROR: script must be run as root" >> $LOG
         exit 1
     fi
+    
+    zkStartOnly=0;
+    if [ "$1" -eq "1" ] ; then
+        zkStartOnly=$1
+    fi
 
 		# Extract the necessary host lists from our environment
 		# (files created by gen-cluster-hosts.sh)
-	bhosts=$(awk '{print $1}' /tmp/brokers)
+	bhosts=$(awk '{print $1}' /home/opc/brokers)
 	if [ -n "bhosts" ] ; then
 		brokers=`echo $bhosts`			# convert <\n> to ' '
 	fi
 	brokers=${brokers// /,}
 
-	zkhosts=$(awk '{print $1}' /tmp/zookeepers)
+	zkhosts=$(awk '{print $1}' /home/opc/zookeepers)
 	if [ -n "$zkhosts" ] ; then
 		zknodes=`echo $zkhosts`			# convert <\n> to ' '
 	fi
 	zknodes=${zknodes// /,}		# not really necessary ... but safe
 
 			# external workers
-	whosts=$(awk '{print $1}' /tmp/workers)
+	whosts=$(awk '{print $1}' /home/opc/workers)
 	if [ -n "whosts" ] ; then
 		workers=`echo $whosts`			# convert <\n> to ' '
 	fi
@@ -1104,7 +1115,7 @@ main()
 		exit 1
 	fi
 
-		# Make sure THIS_HOST is set.  Necessary when DNS resolution is slow.
+	# Make sure THIS_HOST is set.  Necessary when DNS resolution is slow.
 	while [ -z "$THIS_HOST" ] ; do
 		sleep 3
 		THIS_HOST=$(hostname -s)
@@ -1112,13 +1123,13 @@ main()
 
 	update_kadmin_user
 
-		# Make sure DATA_DIRS is set.   If it is not passed in (or obvious
-		# from the log file generated when we initialized the storage),
-		# we can simply look for all "data*" directories # in $CP_HOME.
-		# $CP_HOME/data*  will have been created (or linked) by prepare-disks.sh script.
+	# Make sure DATA_DIRS is set.   If it is not passed in (or obvious
+	# from the log file generated when we initialized the storage),
+	# we can simply look for all "data*" directories # in $CP_HOME.
+	# $CP_HOME/data*  will have been created (or linked) by prepare-disks.sh script.
 	if [ -z "$DATA_DIRS" ] ; then
 		if [ -f /tmp/prepare-disks.log ] ; then
-			eval $(grep ^DATA_DIRS= /tmp/prepare-disks.log)
+			DATA_DIRS=`grep ^DATA_DIRS= /tmp/prepare-disks.log | tail -1 | gawk -F= '{print $2}'`
 		fi
 	fi
 
@@ -1134,9 +1145,6 @@ main()
 	start_core_services
 	wait_for_brokers 600 			# rudimentary function
 
-	create_worker_topics
-	start_worker_services
-	[ -n "$workers" ] && [ -f $CONTROL_CENTER_CFG ] && start_control_center
 
     echo "$0 script finished at "`date` >> $LOG
 }

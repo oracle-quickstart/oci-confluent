@@ -113,23 +113,6 @@ resource "oci_core_security_list" "PublicSubnet" {
 
 }
 
-resource "oci_core_security_list" "PrivateSubnet" {
-    compartment_id = "${var.compartment_ocid}"
-    display_name = "Private"
-    vcn_id = "${oci_core_virtual_network.confluent_vcn.id}"
-    egress_security_rules = [{
-        destination = "0.0.0.0/0"
-        protocol = "6"
-    }]
-    egress_security_rules = [{
-	protocol = "6"
-	destination = "${var.VPC-CIDR}"
-    }]
-    ingress_security_rules = [{
-        protocol = "6"
-        source = "${var.VPC-CIDR}"
-    }]
-}
 
 
 ## Publicly Accessable Subnet Setup
@@ -147,19 +130,4 @@ resource "oci_core_subnet" "public" {
   dns_label = "public${count.index}"
 }
 
-## Private Subnet Setup
-
-resource "oci_core_subnet" "private" {
-  count = "3"
-  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[count.index],"name")}"
-  cidr_block = "${cidrsubnet(var.VPC-CIDR, 8, count.index+3)}"
-  display_name = "private_ad${count.index}"
-  compartment_id = "${var.compartment_ocid}"
-  vcn_id = "${oci_core_virtual_network.confluent_vcn.id}"
-  route_table_id = "${oci_core_route_table.RouteForComplete.id}"
-  security_list_ids = ["${oci_core_security_list.PrivateSubnet.id}"]
-  dhcp_options_id = "${oci_core_virtual_network.confluent_vcn.default_dhcp_options_id}"
-  #prohibit_public_ip_on_vnic = "true"
-  dns_label = "private${count.index}"
-}
 

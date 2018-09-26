@@ -72,8 +72,9 @@ update_fstab() {
 	sed -i "s|^$dev[ 	]|# $dev |" /etc/fstab
 	echo "$dev  $DATA_TOP/$dpath  xfs  defaults  0  0" >> /etc/fstab
 	mkdir -p $DATA_TOP/$dpath/kafka
-  echo "###KADMIN_USER:KADMIN_GROUP = $KADMIN_USER:$KADMIN_GROUP"
-  chown -R $KADMIN_USER:$KADMIN_GROUP $DATA_TOP/$dpath/kafka
+  	
+	echo "###KADMIN_USER:KADMIN_GROUP = $KADMIN_USER:$KADMIN_GROUP"
+  	chown -R $KADMIN_USER:$KADMIN_GROUP $DATA_TOP/$dpath/kafka
 	#chown --reference $CP_HOME $DATA_TOP/$dpath/kafka
 
 	# if [ "$DATA_TOP" == "$CP_HOME" ] ; then
@@ -89,8 +90,8 @@ update_fstab() {
 	# 		DATA_DIRS="$DATA_DIRS ${DATA_TOP}/$dpath/kafka"
 	# 	fi
 	# fi
-  DATA_DIRS="$DATA_DIRS ${DATA_TOP}/$dpath/kafka"
-		# Strip leading space
+  	DATA_DIRS="$DATA_DIRS ${DATA_TOP}/$dpath/kafka"
+	# Strip leading space
 	DATA_DIRS=`echo $DATA_DIRS`
 }
 
@@ -104,8 +105,8 @@ raid_data_disks() {
 		local mdadm_args="--force"
 	fi
 
-		# Create the array and a single mount point
-		# Make sure "--chunk" and "su" settings match !!!
+	# Create the array and a single mount point
+	# Make sure "--chunk" and "su" settings match !!!
 	local mdev=/dev/md0
 	mdadm --create ${mdadm_args:-} --verbose $mdev --level=stripe --chunk=256 --raid-devices=$numDisks $DATA_DISKS
 	[ $? -ne 0 ] && return 1
@@ -130,23 +131,23 @@ mount_data_disks() {
 	[ -z "$DATA_DISKS" ] && return		# nothing to mount
 	local numDisks=`echo $DATA_DISKS | wc -w`
 	if [ $numDisks -gt 1 ] ; then
-    raid_data_disks
+    		raid_data_disks
 		[ $? -eq 0 ] && return
 	fi
 
-  didx=0
+  	didx=0
 	for dev in $DATA_DISKS ; do
-		didx=$((didx+1))		# increment first so "continue" logic works
+		didx=$((didx+1))	# increment first so "continue" logic works
 
-    mkdir $DATA_TOP/data${didx}
+    		mkdir $DATA_TOP/data${didx}
 		[ $? -ne 0 ] && continue			# need better error handling here
 
-    mkfs -t xfs -f $dev
+    		mkfs -t xfs -f $dev
 		[ $? -ne 0 ] && continue		# better error handling here as well
 
-			# If we successfully format and mount the drive,
-			# add an entry to /etc/fstab (and comment-out other
-			# entries for that device).
+		# If we successfully format and mount the drive,
+		# add an entry to /etc/fstab (and comment-out other
+		# entries for that device).
 		mount $dev $DATA_TOP/data${didx}
 		if [ $? -eq 0 ] ; then
 			update_fstab $dev data${didx}

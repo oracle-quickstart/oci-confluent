@@ -20,32 +20,6 @@ resource "oci_core_instance" "WorkerNode" {
   timeouts {
     create = "30m"
   }
-  
-  provisioner "file" {
-      source = "../scripts/firewall-reload.sh"
-      destination = "/home/opc/firewall-reload.sh"
-      connection {
-        agent = false
-        timeout = "10m"
-        host = "${self.public_ip}"
-        user = "opc"
-        private_key = "${var.ssh_private_key}"
-    }
-  }
-  
-  provisioner "remote-exec" {
-      connection {
-        agent = false
-        timeout = "10m"
-        host = "${self.public_ip}"
-        user = "opc"
-        private_key = "${var.ssh_private_key}"
-      }
-      inline = [
-        "chmod +x /home/opc/*.sh",
-        "sudo /home/opc/firewall-reload.sh"
-        ]
-  }
 
 }
 
@@ -70,32 +44,6 @@ resource "oci_core_instance" "BrokerNode" {
 
   timeouts {
     create = "30m"
-  }
-
-  provisioner "file" {
-      source = "../scripts/firewall-reload.sh"
-      destination = "/home/opc/firewall-reload.sh"
-      connection {
-        agent = false
-        timeout = "10m"
-        host = "${self.public_ip}"
-        user = "opc"
-        private_key = "${var.ssh_private_key}"
-    }
-  }
-
-  provisioner "remote-exec" {
-      connection {
-        agent = false
-        timeout = "10m"
-        host = "${self.public_ip}"
-        user = "opc"
-        private_key = "${var.ssh_private_key}"
-      }
-      inline = [
-        "chmod +x /home/opc/*.sh",
-        "sudo /home/opc/firewall-reload.sh"
-        ]
   }
 
 }
@@ -123,32 +71,6 @@ resource "oci_core_instance" "ZookeeperNode" {
 
   timeouts {
     create = "30m"
-  }
-
-  provisioner "file" {
-      source = "../scripts/firewall-reload.sh"
-      destination = "/home/opc/firewall-reload.sh"
-      connection {
-        agent = false
-        timeout = "10m"
-        host = "${self.public_ip}"
-        user = "opc"
-        private_key = "${var.ssh_private_key}"
-    }
-  }
-
-  provisioner "remote-exec" {
-      connection {
-        agent = false
-        timeout = "10m"
-        host = "${self.public_ip}"
-        user = "opc"
-        private_key = "${var.ssh_private_key}"
-      }
-      inline = [
-        "chmod +x /home/opc/*.sh",
-        "sudo /home/opc/firewall-reload.sh"
-        ]
   }
 
 }
