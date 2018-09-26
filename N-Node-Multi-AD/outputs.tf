@@ -10,17 +10,9 @@ value = <<END
 END
 }
 
-output "3 - Control Center  " {
+output "3 - Control Center Web URL  " {
 value = <<END
         http://${data.oci_core_vnic.worker_node_vnic.public_ip_address}:9021/
 END
 }
-
-
-#output "4 - All Broker Node IPs " {
-#value = <<END
-#        ${data.oci_core_vnic.all_broker_nodes_first_vnic.*.public_ip_address}
-#END
-#}
-
 
