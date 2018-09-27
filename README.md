@@ -37,14 +37,16 @@ Deploy using standard Terraform commands
 
         terraform init && terraform plan && terraform apply
 
-When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running.  Those will wrap up asynchronously.  So, it'll be a few more minutes before your cluster is accessible. You can debug deployments by investigating the cloud-init log file `/var/log/messages`.  You'll need to `sudo su` to be able to read it.
-	
+When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running as well as scripts to setup cluster and start services.  Those will wrap up asynchronously.  So, it'll be a few more minutes before your cluster is accessible. You can debug deployments by looking at the following log files.  Login as user: opc as shown below in SSH section. Public ip address of all nodes is available on [OCI Web Console](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances)
+
+On each instance, the cloud-init log file location is `/var/log/messages. 	
 	sudo less /var/log/messages
 
-For detailed Confluent platform install and deployment logs, refer to:
+To watch cluster installation progress after terraform completes, run the following commands. The public IP will output as a result of the Terraform completion.
 
-	/tmp/cp-install.err
-	/tmp/cp-deploy.err
+	ssh -i ~/.ssh/id_rsa opc@<broker-1 public ip>
+	sudo su -
+	screen -r
 
 
 ## SSH to Broker Node
@@ -60,9 +62,20 @@ You can access Control Center UI using the URL below. The UI will only be availa
 	
 	http://<worker-1 public ip>:9021/
 
+This gives the following output: 
+
+![](./images/6_Broker_Nodes_Control_Center_Capture.PNG)
+
 
 ## View the Cluster in OCI Console
 You can also login to the web console [here](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) to view the IaaS that is running the cluster.
 
+Virtual Cloud Network (vcn) page:
+
+![](./images/OCI_VCN_View_Capture.PNG)
+
+Cluster Nodes/Instances page:
+
+![](./images/OCI_Instance_View_Capture.PNG)
 
 
