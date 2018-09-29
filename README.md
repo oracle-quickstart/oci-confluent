@@ -4,9 +4,16 @@ Included here are Terraform template to deploy Confluent Platform on Oracle Clou
 ## Custom (N-Node) in single AD
 OCI supports N-Node Confluent platform implementation. This template deploys multiple instances of brokers, workers and zookeeper nodes.  Out of the box, Terraform template deploys 3 Broker nodes and 2 Workers nodes. Zookeeper is also deployed on Broker nodes.  The template supports deploying Zookeeper on its dedicated nodes, if required. 
 
+Single AD Architecture:
+
+![](./images/Single_AD_Arch_Capture.PNG)
+
 ## N-Node Multi AD for High Availability
-[N-Node-Multi-AD](https://github.com/cloud-partners/oci-confluent/tree/master/N-Node-Multi-AD) contains terraform template to deploy Confluent platform across 3 Availability domains (ADs)
-for high availability.
+[N-Node-Multi-AD](https://github.com/cloud-partners/oci-confluent/tree/master/N-Node-Multi-AD) contains terraform template to deploy Confluent platform across 3 Availability domains (ADs) for high availability. 
+
+Multi-AD Architecture;
+![](./images/Multi-AD_Arch_Capture.PNG)
+
 
 ## Prerequisites
 In addition to an active tenancy on OCI, you will need a functional installation of Terraform, and an API key for a privileged user in the tenancy.  See these documentation links for more information:
