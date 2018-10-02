@@ -161,6 +161,7 @@ localmachine=false
 counter=1
 zkcount=`cat /home/opc/zookeepers | wc -l`
 for host in `cat /home/opc/cphosts | gawk -F '.' '{print $1}'`; do
+	
 	echo -e "\tConfiguring $host for deployment."
 	ssh_check
 	echo $THIS_HOST | grep -q -w "$host"
@@ -279,8 +280,22 @@ for host in `cat /home/opc/cphosts | gawk -F '.' '{print $1}'`; do
 		ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i /home/opc/.ssh/id_rsa opc@$host "sudo firewall-cmd --reload"
 		ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i /home/opc/.ssh/id_rsa opc@$host "sudo firewall-cmd --runtime-to-permanent"
 	fi
+	
+	if [ "$localmachine" = true  ] ; then
+		[ -f /tmp/boot.sh.tpl.complete ]
+	else
+		ssh  -o BatchMode=yes -o StrictHostKeyChecking=no -i /home/opc/.ssh/id_rsa  opc@$host "[ -f /tmp/boot.sh.tpl.complete ]"
+	fi
+	while [ $? -ne 0 ] ; do
+		echo "sleeping while cloud-init script completes execution on $host"
+		sleep 20;
+		if [ "$localmachine" = true  ] ; then
+                	[ -f /tmp/boot.sh.tpl.complete ]
+	        else
+        	        ssh  -o BatchMode=yes -o StrictHostKeyChecking=no -i /home/opc/.ssh/id_rsa  opc@$host "[ -f /tmp/boot.sh.tpl.complete ]"
+        	fi
 
-
+	done;
 
 
 	AMI_SBIN=/tmp/sbin

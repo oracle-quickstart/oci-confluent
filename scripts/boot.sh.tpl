@@ -87,6 +87,8 @@ $AMI_SBIN/iscsi.sh
 $AMI_SBIN/prep-cp-instance.sh
 . $AMI_SBIN/prepare-disks.sh
 
+touch /tmp/boot.sh.tpl.complete
+
 echo "boot.sh.tpl setup complete"
 
 
