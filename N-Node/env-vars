@@ -5,7 +5,7 @@ export TF_VAR_fingerprint="<replace with your OCI key fingerprint>"
 export TF_VAR_private_key_path=/home/opc/.oci/oci_api_key.pem
 
 ### Region
-export TF_VAR_region="us-phoenix-1"
+export TF_VAR_region="us-ashburn-1"
 
 ### Compartment
 export TF_VAR_compartment_ocid="<replace with your compartment ocid>"
@@ -21,7 +21,7 @@ export TF_VAR_AD="2"
 export TF_VAR_BrokerNodeCount="3"
 
 ### Set the number of Worker Nodes - this allows N-Node scaling for Workers
-export TF_VAR_WorkerNodeCount="3"
+export TF_VAR_WorkerNodeCount="2"
 
 ### Set the number of Zookeeper Nodes - this allows N-Node scaling for Zookeepers
 ## Number of independent Zookeepers (if 0, zookeeper will be deployed on the Kafka brokers). Valid values: 0,1,3,5
@@ -29,13 +29,13 @@ export TF_VAR_ZookeeperNodeCount="0"
 
 
 ## Customize the shape to be used for Broker Host
-export TF_VAR_BrokerInstanceShape="VM.Standard2.2"
+export TF_VAR_BrokerInstanceShape="VM.Standard1.2"
 
 ## Customize the shape to be used for Worker Host
-export TF_VAR_WorkerInstanceShape="VM.Standard2.2"
+export TF_VAR_WorkerInstanceShape="VM.Standard1.1"
 
 ## Customize the shape to be used for Zookeeper Host
-export TF_VAR_ZookeeperInstanceShape="VM.Standard2.1"
+export TF_VAR_ZookeeperInstanceShape="VM.Standard1.1"
 
 ## Block Storage in GiB for Broker Node
 export TF_VAR_BrokerNodeStorage="1024"
