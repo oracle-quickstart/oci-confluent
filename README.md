@@ -66,7 +66,8 @@ When terraform apply is complete, the terminal console will display the public i
 
 
 ## Confluent Platform Control Center 
-You can access Control Center UI using the URL below. The UI will only be available after the cloud-init scripts complete execution, so it will be a few more minutes before it is accessible.  
+You can access Control Center UI using the URL below. The UI will only be available after the cloud-init scripts complete execution, so it will be a few more minutes before it is accessible. The logs are available at /tmp/control-center-logs/control-center.out
+ 
 	
 	http://<worker-1 public ip>:9021/
 
