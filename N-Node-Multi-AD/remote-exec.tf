@@ -1,7 +1,7 @@
 resource "null_resource" "cf-cluster-setup" {
     depends_on = ["oci_core_instance.ZookeeperNode","oci_core_instance.BrokerNode","oci_core_instance.WorkerNode","oci_core_volume_attachment.BrokerAttachment1"]
     provisioner "file" {
-      source = "/home/opc/.ssh/id_rsa"
+      source = "${var.ssh_private_key_path}"
       destination = "/home/opc/.ssh/id_rsa"
       connection {
         agent = false

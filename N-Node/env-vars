@@ -14,6 +14,10 @@ export TF_VAR_compartment_ocid="<replace with your compartment ocid>"
 export TF_VAR_ssh_public_key=$(cat /home/opc/.ssh/id_rsa.pub)
 export TF_VAR_ssh_private_key=$(cat /home/opc/.ssh/id_rsa)
 
+## The path to the file, not the content of the file
+export TF_VAR_ssh_private_key_path="/home/opc/.ssh/id_rsa"
+
+
 ### An AD to deploy the Confluent platform. Valid values: 1,2,3 for regions with 3 ADs
 export TF_VAR_AD="2"  
 

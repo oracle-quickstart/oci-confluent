@@ -33,15 +33,6 @@ resource "oci_core_security_list" "PublicSubnet" {
         destination = "0.0.0.0/0"
         protocol = "6"
     }]
-    /* .. */
-    ingress_security_rules = [{
-        tcp_options {
-            "max" = 80
-            "min" = 80
-        }
-        protocol = "6"
-        source = "0.0.0.0/0"
-    }]
     ingress_security_rules = [{
         tcp_options {
             "max" = 22

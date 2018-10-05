@@ -13,6 +13,9 @@ variable "ssh_public_key" {}
 variable "ssh_private_key" {}
 
 
+variable "ssh_private_key_path" {}
+
+
 ## An AD to deploy the Confluent platform. Valid values: 1,2,3 for regions with 3 ADs
 variable "AD" { default = "2" }
 
