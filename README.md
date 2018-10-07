@@ -28,7 +28,7 @@ Once the pre-requisites are in place, you will need to copy the templates from t
 ## Clone the Terraform template
 Now, you'll want a local copy of this repo.  You can make that with the commands:
 
-    git clone https://github.com/pvaldria/oci-confluent.git
+    git clone https://github.com/cloud-partners/oci-confluent.git
     cd oci-confluent/N-Node
     ls
 
@@ -39,7 +39,7 @@ Note:  If you plan to deploy Confluent across 3 ADs, then go to N-Node-Multi-AD 
  
 
 ## Update Template Configuration
-Update environment variables in config file: [env-vars](https://github.com/pvaldria/oci-confluent/blob/master/N-Node/env-vars)  to specify your OCI account details like tenancy_ocid, user_ocid, compartment_ocid. Also you can customize Confluent Platform cluster information including  Brokers, Workers and Zookeeper nodes configuration. To source this file prior to installation, either reference it in your .rc file for your shell's or run the following:
+Update environment variables in config file: [env-vars](https://github.com/cloud-partners/oci-confluent/blob/master/N-Node/env-vars)  to specify your OCI account details like tenancy_ocid, user_ocid, compartment_ocid. Also you can customize Confluent Platform cluster information including  Brokers, Workers and Zookeeper nodes configuration. To source this file prior to installation, either reference it in your .rc file for your shell's or run the following:
 
         source env-vars
 
