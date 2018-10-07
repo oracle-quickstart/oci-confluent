@@ -54,19 +54,15 @@ Deploy using standard Terraform commands
 When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running as well as scripts to setup cluster and start services.  Those will wrap up asynchronously.  So, it'll be a few more minutes before your cluster is accessible. You can debug deployments by looking at the following log files.  Login as user: opc as shown below in SSH section. Public ip address of all nodes is available on [OCI Web Console Phoenix Region](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) / [OCI Web Console Ashburn Region](https://console.us-ashburn-1.oraclecloud.com/a/compute/instances)
 
 
-
-
- [OCI Web Console](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances)
-
-On each instance, the cloud-init log file location is `/var/log/messages. 	
-
-	sudo less /var/log/messages
-
 To watch cluster installation progress after terraform completes, run the following commands. The public IP will output as a result of the Terraform completion.
 
 	ssh -i ~/.ssh/id_rsa opc@<broker-1 public ip>
 	sudo su -
 	screen -r
+
+On each instance, the cloud-init log file location is `/var/log/messages.
+
+        sudo less /var/log/messages
 
 
 ## SSH to Broker Node
