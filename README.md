@@ -2,7 +2,7 @@
 Included here are Terraform template to deploy Confluent Platform on Oracle Cloud Infrastructure (OCI) in a single AD (Availability Domain/Zone) or  Multi-AD (high availablilty).  Instructions on how to use it are below. 
 
 ## Custom (N-Node) in single AD
-OCI supports [N-Node](https://github.com/cloud-partners/oci-confluent/tree/master/N-Node) Confluent platform implementation. This template deploys multiple instances of brokers, workers and zookeeper nodes.  Out of the box, Terraform template deploys 3 Broker nodes and 2 Workers nodes. Zookeeper is also deployed on Broker nodes.  The template supports deploying Zookeeper on its dedicated nodes, if required. OCI Object Storage is used to store the deployment scripts which will be pulled by each instance as part of the initialization.  OPTIONAL: If you would like to customize the scripts,  you can do so and then upload the updated scripts to a bucket in your account and update [boot.sh.tpl](https://github.com/cloud-partners/oci-confluent/blob/master/scripts/boot.sh.tpl) to point to the URL for your bucket.   
+OCI supports [N-Node](https://github.com/cloud-partners/oci-confluent/tree/master/N-Node) Confluent platform implementation. This template deploys multiple instances of brokers, workers and zookeeper nodes.  Out of the box, Terraform template deploys 3 Broker nodes and 2 Workers nodes. Zookeeper is also deployed on Broker nodes.  The template supports deploying Zookeeper on its dedicated nodes, if required. OCI Object Storage is used to store the deployment scripts which will be pulled by each instance as part of the initialization to deploy Confluent platform.  OPTIONAL: If you would like to customize the scripts,  you can do so and then upload the updated scripts to a bucket in your account and update [boot.sh.tpl](https://github.com/cloud-partners/oci-confluent/blob/master/scripts/boot.sh.tpl) to point to the URL for your bucket.   
 
 Single AD Architecture:
 
@@ -51,7 +51,12 @@ Deploy using standard Terraform commands
 
         terraform init && terraform plan && terraform apply
 
-When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running as well as scripts to setup cluster and start services.  Those will wrap up asynchronously.  So, it'll be a few more minutes before your cluster is accessible. You can debug deployments by looking at the following log files.  Login as user: opc as shown below in SSH section. Public ip address of all nodes is available on [OCI Web Console](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances)
+When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running as well as scripts to setup cluster and start services.  Those will wrap up asynchronously.  So, it'll be a few more minutes before your cluster is accessible. You can debug deployments by looking at the following log files.  Login as user: opc as shown below in SSH section. Public ip address of all nodes is available on [OCI Web Console Phoenix Region](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) / [OCI Web Console Ashburn Region](https://console.us-ashburn-1.oraclecloud.com/a/compute/instances)
+
+
+
+
+ [OCI Web Console](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances)
 
 On each instance, the cloud-init log file location is `/var/log/messages. 	
 
