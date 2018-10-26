@@ -95,4 +95,6 @@ Cluster Nodes/Instances page:
 
 ![](./images/OCI_Instance_View_Capture.PNG)
 
-
+## How to integration with Oracle Object Storage
+Integration-with-Oracle-Object-Storage
+Detailed steps are document [here](https://github.com/cloud-partners/oci-confluent/blob/master/Integration-with-Oracle-Object-Storage/README.md)
