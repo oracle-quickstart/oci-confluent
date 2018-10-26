@@ -21,7 +21,7 @@ This document describes how to integrate Confluent Kafka with Oracle Cloud Infra
     https://<object_storage_namespace>.compat.objectstorage.eu-frankfurt-1.oraclecloud.com
     https://<object_storage_namespace>.compat.objectstorage.uk-london-1.oraclecloud.com
     
-    Replace <object_storage_namespace> with value from  Step3 above.  
+    **Replace <object_storage_namespace> with value from  Step3 above.**  
 
 
 6. Create a bucket in Orace Object Storage using OCI console.  eg: kafka_sink_object_storage_bucket
@@ -44,7 +44,7 @@ Example:
     for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' http://cf-worker-1:8082/topics/kafka_oci_object_storage_test ;   done;
 
 
-3. Gracefully stop the connect-distributed daemon using the below command. Run this on all Confluent worker nodes. (example: cf-worker-<n>):
+3. Gracefully stop the connect-distributed daemon using the below command. Run this on all Confluent worker nodes.(example: cf-worker-1):
     
     ssh -i ~/.ssh/id_rsa opc@<ip address or cf-worker-1>
     ps -efw | grep "org.apache.kafka.connect.cli.ConnectDistributed" | grep -v "grep " |  gawk '{ print $2 }' | xargs sudo kill -15
