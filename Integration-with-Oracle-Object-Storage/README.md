@@ -44,15 +44,15 @@ Example:
     for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' http://cf-worker-1:8082/topics/kafka_oci_object_storage_test ;   done;
 
 
-3. Gracefully stop the connect-distributed daemon using the below command: 
-
-    Run this on all Confluent worker nodes. (example: cf-worker-<n>):
+3. Gracefully stop the connect-distributed daemon using the below command. Run this on all Confluent worker nodes. (example: cf-worker-<n>):
+    
     ssh -i ~/.ssh/id_rsa opc@<ip address or cf-worker-1>
     ps -efw | grep "org.apache.kafka.connect.cli.ConnectDistributed" | grep -v "grep " |  gawk '{ print $2 }' | xargs sudo kill -15
 
 4. Update connect-distributed.properties to use JsonConverter and schemas.enable set to false on all worker nodes.  In my example, I am using JSON messages and hence the below change is needed, since by default, it comes configured with AvroConverter  
 
 On each of the Confluent Worker Nodes (example: cf-worker-<n>):
+    
     vim /opt/confluent/etc/kafka/connect-distributed.properties
 
 Make sure, the config files contains the below lines 
@@ -71,23 +71,26 @@ Make sure, the config files contains the below lines
 
 5. Configure Confluent worker nodes with credentials to access Object Storage ans start Kafka connect daemon.  The keys below are labelled as AWS_xxxxx,  but its values needs to be set with the keys generated in prerequisites Step2 on OCI console. 
 
-    Do the steps on each of the Confluent Worker Nodes (example: cf-worker-<n>):
+Do the steps on each of the Confluent Worker Nodes (example: cf-worker-<n>):
+    
     ssh -i ~/.ssh/id_rsa opc@cf-worker-1  
 
-    [opc@cf-worker-1 ~]$ sudo AWS_ACCESS_KEY_ID=9fef0a60aca7dfbf69ea9a69cd281f0aecccb4d9 \
+    sudo AWS_ACCESS_KEY_ID=9fef0a60aca7dfbf69ea9a69cd281f0aecccb4d9 \
     AWS_SECRET_ACCESS_KEY=uQbQMub7dh6Mg3R009eckN3XURwmKbSw8r1FihtWNO0= \ 
     /opt/confluent/bin/connect-distributed -daemon /opt/confluent/etc/kafka/connect-distributed.properties
 
 
-X. Load the Confluent Connect S3 Sink connector with configuration to access Oracle Object Storage. 
+6. Load the Confluent Connect S3 Sink connector with configuration to access Oracle Object Storage. 
 
-Note: We are setting the below parameters with OCI specific values (not AWS values): 
-"s3.region": "us-phoenix-1"
-"store.url": "intmahesht.compat.objectstorage.us-phoenix-1.oraclecloud.com"   (Replace with value from Prerequisite Step5).
+Note: We are setting the below parameters with OCI specific values (**not AWS values**): 
+
+    "s3.region": "us-phoenix-1"  (**Replace with value from Prerequisite Step4**).
+    "store.url": "intmahesht.compat.objectstorage.us-phoenix-1.oraclecloud.com"   (**Replace with value from Prerequisite Step5**).
 
 Similarly replace the below with the values which apply for your implementation:
-"topics": "kafka_oci_object_storage_test"
-"s3.bucket.name": "kafka_sink_object_storage_bucket"
+
+    "topics": "kafka_oci_object_storage_test"
+    "s3.bucket.name": "kafka_sink_object_storage_bucket"
 
  I am using the REST API, so you can run it from anywhere as far as confluent worker nodes (cf-worker-1) are reachable. 
  Command to run:
@@ -115,7 +118,7 @@ Similarly replace the below with the values which apply for your implementation:
 ## View Bucket and Objects
 Go to OCI Console and navigate to Object Storage:  
 
-    For us-phoenix-1:   [https://console.us-phoenix-1.oraclecloud.com/](https://console.us-phoenix-1.oraclecloud.com/)
+    For us-phoenix-1:   [https://console.us-phoenix-1.oraclecloud.com](https://console.us-phoenix-1.oraclecloud.com)
 
 Bucket View:
 
@@ -129,6 +132,7 @@ Object Content:
 
 ## Troubleshooting
 To view the logs, go here on worker nodes (cf-worker-<n>) 
+    
     less /opt/confluent/logs/connectDistributed.out
 
 
