@@ -7,7 +7,7 @@ This document describes how to integrate Confluent Kafka with Oracle Cloud Infra
 
 3. Identify your Object Storage Namespace, which is basically your tenancy name, since we will need it.   You can find it in OCI console, see screenshot below.  
 
-![](./images/tenant1.PNG)
+![](../images/tenant1.PNG)
 
 4. Identify the Oracle Cloud Infrastructure region which you plan to use. eg:  us-phoenix-1,  us-ashburn-1, etc.  
 
@@ -26,14 +26,14 @@ This document describes how to integrate Confluent Kafka with Oracle Cloud Infra
 
 6. Create a bucket in Orace Object Storage using OCI console.  eg: kafka_sink_object_storage_bucket
 
-![](./images/create_bucket.PNG)
+![](../images/create_bucket.PNG)
 
 
 
 ## Modifying your application (eg: Confluent Kafka) to access Object Storage
 1. Assuming you already have confluent platform installed on OCI using this Github repo.  Let's create a topic using Confluent Control Center UI or command line or REST API.   example: kafka_oci_object_storage_test.  
 
-![](./images/create_topic.PNG)
+![](../images/create_topic.PNG)
 
 2. Produce a few messages using JSON with the value '{ "foo": "bar" }' to the topic created above. 
 I am using the REST API, so you can run it from anywhere as far as confluent worker nodes (cf-worker-1) are reachable. 
@@ -119,11 +119,11 @@ Go to OCI Console and navigate to Object Storage:
 
 Bucket View:
 
-![](./images/bucket_content.PNG)
+![](../images/bucket_content.PNG)
 
 Object Content:
 
-![](./images/object_content.PNG)
+![](../images/object_content.PNG)
 
 
 
