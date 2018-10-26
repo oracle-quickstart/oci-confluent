@@ -24,14 +24,14 @@ This document describes how to integrate Confluent Kafka with Oracle Cloud Infra
     **Replace <object_storage_namespace> with value from  Step3 above.**  
 
 
-6. Create a bucket in Orace Object Storage using OCI console.  eg: kafka_sink_object_storage_bucket
+6. Create a bucket in Orace Object Storage using OCI console.  **eg: kafka_sink_object_storage_bucket**
 
 ![](../images/create_bucket.PNG)
 
 
 
 ## Modifying your application (eg: Confluent Kafka) to access Object Storage
-1. Assuming you already have confluent platform installed on OCI using this Github repo.  Let's create a topic using Confluent Control Center UI or command line or REST API.   example: kafka_oci_object_storage_test.  
+1. Assuming you already have confluent platform installed on OCI using this Github repo.  Let's create a topic using Confluent Control Center UI or command line or REST API.   **example: kafka_oci_object_storage_test.**
 
 ![](../images/create_topic.PNG)
 
