@@ -47,6 +47,7 @@ Example:
 3. Gracefully stop the connect-distributed daemon using the below command. Run this on all Confluent worker nodes.(example: cf-worker-1):
     
     ssh -i ~/.ssh/id_rsa opc@<ip address or cf-worker-1>
+    
     ps -efw | grep "org.apache.kafka.connect.cli.ConnectDistributed" | grep -v "grep " |  gawk '{ print $2 }' | xargs sudo kill -15
 
 4. Update connect-distributed.properties to use JsonConverter and schemas.enable set to false on all worker nodes.  In my example, I am using JSON messages and hence the below change is needed, since by default, it comes configured with AvroConverter  
@@ -75,8 +76,8 @@ Do the steps on each of the Confluent Worker Nodes (example: cf-worker-<n>):
     
     ssh -i ~/.ssh/id_rsa opc@cf-worker-1  
 
-    sudo AWS_ACCESS_KEY_ID=9fef0a60aca7dfbf69ea9a69cd281f0aecccb4d9 \
-    AWS_SECRET_ACCESS_KEY=uQbQMub7dh6Mg3R009eckN3XURwmKbSw8r1FihtWNO0= \ 
+    sudo AWS_ACCESS_KEY_ID=<replace with your OCI Object storage access key> \
+    AWS_SECRET_ACCESS_KEY=<replace with your OCI Object storage secret key> \ 
     /opt/confluent/bin/connect-distributed -daemon /opt/confluent/etc/kafka/connect-distributed.properties
 
 
