@@ -1,4 +1,4 @@
-This document describes how to integrate Confluent Kafka with Oracle Cloud Infrastructure Object Storage using Kafka Connect S3 connector. 
+## This document describes how to integrate Confluent Kafka with Oracle Object Storage using Kafka Connect S3 connector. 
 
 ## Prerequisites
 1. This assumes you already have an Oracle Cloud Infrastructure account.  If not, to create a Oracle Cloud Infrastructure tenant.  See [Signing Up for Oracle Cloud Infrastructure.](https://docs.cloud.oracle.com/iaas/Content/GSG/Tasks/signingup.htm)
