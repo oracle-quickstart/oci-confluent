@@ -61,4 +61,4 @@ Cluster Nodes/Instances page:
 ![](./images/07%20-%20instances.png)
 
 ## Oracle Object Storage
-You can use Confluent with Oracle Object storage.  A writeup is [here](Oracle Object Storage and Confluent Connector.md).
+You can use Confluent with Oracle Object storage.  A writeup is [here](Oracle%20Object%20Storage%20and%20Confluent%20Connector.md).
