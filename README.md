@@ -1,5 +1,5 @@
 # oci-terraform-dse
-These are Terraform modules that deploy [Confluent Platform](https://www.confluent.io/product/confluent-platform/) on OCI.
+These are Terraform modules that deploy [Confluent Platform](https://www.confluent.io/product/confluent-platform/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure).
 
 * [community](community) deploys the Community Edition
 * [commercial](commercial) deploys Commercial Edition including Control Center
