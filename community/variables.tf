@@ -21,23 +21,35 @@ variable "ssh_private_key" {}
 # The defaults here will give you a cluster.  You can also modify these.
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "couchbase_server" {
+variable "broker" {
   type = "map"
   default = {
-    shape = "VM.Standard2.4"
+    shape = "VM.Standard.E2.4"
     node_count = 3
-    version = "5.5.3"
-    adminUsername = "couchbase"
-    adminPassword = "foo123!"
   }
 }
 
-variable "couchbase_syncgateway" {
+variable "zookeeper" {
   type = "map"
   default = {
-    shape = "VM.Standard2.2"
+    shape = "VM.Standard.E2.2"
+    node_count = 3
+  }
+}
+
+variable "connect" {
+  type = "map"
+  default = {
+    shape = "VM.Standard.E2.2"
     node_count = 2
-    version = "2.0.0"
+  }
+}
+
+variable "rest" {
+  type = "map"
+  default = {
+    shape = "VM.Standard.E2.2"
+    node_count = 2
   }
 }
 
