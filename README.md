@@ -55,10 +55,10 @@ This gives the following output:
 You can also login to the web console [here](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) to view the IaaS that is running the cluster.
 
 Virtual Cloud Network (vcn) page:
-![](./images/06 - vcn.png)
+![](./images/06%20-%20vcn.png)
 
 Cluster Nodes/Instances page:
-![](./images/07 - instances.png)
+![](./images/07%20-%20instances.png)
 
 ## Oracle Object Storage
 You can use Confluent with Oracle Object storage.  A writeup is [here](Oracle Object Storage and Confluent Connector.md).
