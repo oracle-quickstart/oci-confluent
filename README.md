@@ -1,6 +1,8 @@
 # oci-terraform-dse
 [simple](simple) is a Terraform module that will deploy Confluent on OCI.  It supports both the Community and Commercial versions.  Instructions on how to use it are below.
 
+![](./images/00%20-%20architecture.png)
+
 ## Prerequisites
 First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
 
