@@ -43,9 +43,9 @@ You'll need to enter `yes` when prompted.  The apply should take about five minu
 When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running.  Those will wrap up asynchronously.  The cluster might take ten minutes.  Now is a good time to get a coffee.
 
 ## Login to Confluent Control Center
-You can access Control Center UI using the URL below. The UI will only be available after the cloud-init scripts complete execution, so it will be a few more minutes before it is accessible. The logs are available at /tmp/control-center-logs/control-center.out
+You can access Control Center UI using the URL below. The UI will only be available after the cloud-init scripts complete execution, so it will be a few more minutes before it is accessible. The logs are available at `/tmp/control-center-logs/control-center.out`
 
-	http://<worker-1 public ip>:9021/
+    http://<worker-1 public ip>:9021/
 
 This gives the following output:
 
@@ -55,13 +55,10 @@ This gives the following output:
 You can also login to the web console [here](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) to view the IaaS that is running the cluster.
 
 Virtual Cloud Network (vcn) page:
-
 ![](./images/06 - vcn.png)
 
 Cluster Nodes/Instances page:
-
 ![](./images/07 - instances.png)
 
-## How to integration with Oracle Object Storage
-Integration-with-Oracle-Object-Storage
-Detailed steps are document [here](https://github.com/cloud-partners/oci-confluent/blob/master/Integration-with-Oracle-Object-Storage/README.md)
+## Oracle Object Storage
+You can use Confluent with Oracle Object storage.  A writeup is [here](Oracle Object Storage and Confluent Connector.md).
