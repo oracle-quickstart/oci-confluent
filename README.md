@@ -1,7 +1,8 @@
 # oci-terraform-dse
-[terraform](terraform) contains a Terraform module that will deploy Confluent on OCI.  It supports both the Community and Commercial versions.  Instructions on how to use it are below.
+These are Terraform modules that deploy [Confluent Platform](https://www.confluent.io/product/confluent-platform/) on OCI.
 
-![](./images/00%20-%20architecture.png)
+* [community](community) deploys the Community Edition
+* [commercial](commercial) deploys Commercial Edition including Control Center
 
 ## Prerequisites
 First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
