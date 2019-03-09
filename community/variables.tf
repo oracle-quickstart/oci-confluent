@@ -26,6 +26,8 @@ variable "broker" {
   default = {
     shape = "VM.Standard.E2.4"
     node_count = 3
+    disk_count = 1
+    disk_size = 700
   }
 }
 

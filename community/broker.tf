@@ -27,6 +27,22 @@ resource "oci_core_instance" "broker" {
   count = "${var.broker["node_count"]}"
 }
 
+resource "oci_core_volume" "broker" {
+  count               = "${var.broker["node_count"] * var.broker["disk_count"]}"
+  availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
+  compartment_id      = "${var.compartment_ocid}"
+  display_name        = "broker${count.index % var.worker["node_count"]}-volume${floor(count.index / var.worker["node_count"])}"
+  size_in_gbs         = "${var.broker["disk_size"]}"
+}
+
+resource "oci_core_volume_attachment" "broker" {
+  count           = "${var.worker["node_count"] * var.worker["disk_count"]}"
+  attachment_type = "iscsi"
+  compartment_id  = "${var.compartment_ocid}"
+  instance_id     = "${oci_core_instance.worker.*.id[count.index % var.worker["node_count"]]}"
+  volume_id       = "${oci_core_volume.worker.*.id[count.index]}"
+}
+
 output "Kafka Broker Public IPs" {
   value = "${join(",", oci_core_instance.broker.*.public_ip)}"
 }
