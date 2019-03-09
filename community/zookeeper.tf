@@ -1,24 +1,28 @@
-resource "oci_core_instance" "ZookeeperNode" {
-  count               = "${var.ZookeeperNodeCount}"
-  availability_domain = "${lookup(data.oci_identity_availability_domains.ADs.availability_domains[var.AD - 1],"name")}"
+resource "oci_core_instance" "zookeeper" {
+  display_name        = "zookeeper-${count.index}"
   compartment_id      = "${var.compartment_ocid}"
-  display_name        = "CF Zookeeper ${format("%01d", count.index+1)}"
-  hostname_label      = "CF-Zookeeper-${format("%01d", count.index+1)}"
-  shape               = "${var.ZookeeperInstanceShape}"
-  subnet_id           = "${oci_core_subnet.public.*.id[var.AD - 1]}"
+  availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
+  shape               = "${var.zookeeper["shape"]}"
+  subnet_id           = "${oci_core_subnet.subnet.id}"
 
   source_details {
+    source_id   = "${var.images[var.region]}"
     source_type = "image"
-    source_id = "${var.InstanceImageOCID[var.region]}"
+  }
+
+  create_vnic_details {
+    subnet_id      = "${oci_core_subnet.subnet.id}"
+    hostname_label = "zookeeper-${count.index}"
   }
 
   metadata {
     ssh_authorized_keys = "${var.ssh_public_key}"
-    user_data = "${base64encode(data.template_file.boot_script.rendered)}"
 
+    user_data = "${base64encode(join("\n", list(
+      "#!/usr/bin/env bash",
+      file("../scripts/zookeeper.sh")
+    )))}"
   }
 
-  timeouts {
-    create = "30m"
-  }
+  count = "${var.zookeeper["node_count"]}"
 }

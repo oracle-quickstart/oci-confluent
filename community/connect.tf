@@ -1,5 +1,5 @@
-resource "oci_core_instance" "broker" {
-  display_name        = "broker-${count.index}"
+resource "oci_core_instance" "connect" {
+  display_name        = "connect-${count.index}"
   compartment_id      = "${var.compartment_ocid}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
   shape               = "${var.broker["shape"]}"
@@ -12,7 +12,7 @@ resource "oci_core_instance" "broker" {
 
   create_vnic_details {
     subnet_id      = "${oci_core_subnet.subnet.id}"
-    hostname_label = "broker-${count.index}"
+    hostname_label = "connect-${count.index}"
   }
 
   metadata {
@@ -20,13 +20,13 @@ resource "oci_core_instance" "broker" {
 
     user_data = "${base64encode(join("\n", list(
       "#!/usr/bin/env bash",
-      file("../scripts/broker.sh")
+      file("../scripts/connect.sh")
     )))}"
   }
 
-  count = "${var.broker["node_count"]}"
+  count = "${var.connect["node_count"]}"
 }
 
-output "Kafka Broker Public IPs" {
-  value = "${join(",", oci_core_instance.broker.*.public_ip)}"
+output "Kafka Connect Public IPs" {
+  value = "${join(",", oci_core_instance.connect.*.public_ip)}"
 }
