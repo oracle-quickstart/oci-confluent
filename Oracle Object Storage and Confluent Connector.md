@@ -1,4 +1,4 @@
-## This document describes how to integrate Confluent Kafka with Oracle Object Storage using Kafka Connect S3 connector.
+# Oracle Object Storage and Confluent Connector
 
 ## Prerequisites
 1. This assumes you already have an Oracle Cloud Infrastructure account.  If not, to create a Oracle Cloud Infrastructure tenant.  See [Signing Up for Oracle Cloud Infrastructure.](https://docs.cloud.oracle.com/iaas/Content/GSG/Tasks/signingup.htm)
@@ -11,11 +11,9 @@
 
 4. Identify the Oracle Cloud Infrastructure region which you plan to use. eg:  us-phoenix-1,  us-ashburn-1, etc.  
 
-
 5. The API endpoint (store.url) to be used in Connect S3 connector configuration to access Oracle Object Storage will depend on the values of region and namespace (Step3 and Step4 above).
 
     API Endpoints:
-
     https://<object_storage_namespace>.compat.objectstorage.us-phoenix-1.oraclecloud.com
     https://<object_storage_namespace>.compat.objectstorage.us-ashburn-1.oraclecloud.com
     https://<object_storage_namespace>.compat.objectstorage.eu-frankfurt-1.oraclecloud.com
@@ -23,15 +21,12 @@
 
     **Replace <object_storage_namespace> with value from  Step3 above.**  
 
-
 6. Create a bucket in Orace Object Storage using OCI console.  **eg: kafka_sink_object_storage_bucket**
 
 ![](../images/create_bucket.PNG)
 
-
-
-## Modifying your application (eg: Confluent Kafka) to access Object Storage
-1. Assuming you already have confluent platform installed on OCI using this Github repo.  Let's create a topic using Confluent Control Center UI or command line or REST API.   **example: kafka_oci_object_storage_test.**
+## Configure Confluent to Access Object Storage
+1. Assuming you already have Confluent installed on OCI using this Github repo.  Let's create a topic using Confluent Control Center UI or command line or REST API.   **example: kafka_oci_object_storage_test.**
 
 ![](../images/create_topic.PNG)
 
@@ -42,7 +37,6 @@ Example:
 
     ssh -i ~/.ssh/id_rsa opc@<ip address or cf-worker-1>
     for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' http://cf-worker-1:8082/topics/kafka_oci_object_storage_test ;   done;
-
 
 3. Gracefully stop the connect-distributed daemon using the below command. Run this on all Confluent worker nodes.(example: cf-worker-1):
 
@@ -69,7 +63,6 @@ Make sure, the config files contains the below lines
     # value.converter.schemas.enable=true
     value.converter.schemas.enable=false
 
-
 5. Configure Confluent worker nodes with credentials to access Object Storage ans start Kafka connect daemon.  The keys below are labelled as AWS_xxxxx,  but its values needs to be set with the keys generated in prerequisites Step2 on OCI console.
 
 Do the steps on each of the Confluent Worker Nodes (example: cf-worker-<n>):
@@ -80,8 +73,7 @@ Do the steps on each of the Confluent Worker Nodes (example: cf-worker-<n>):
     AWS_SECRET_ACCESS_KEY=<replace with your OCI Object storage secret key> \
     /opt/confluent/bin/connect-distributed -daemon /opt/confluent/etc/kafka/connect-distributed.properties
 
-
-6. Load the Confluent Connect S3 Sink connector with configuration to access Oracle Object Storage. 
+6. Load the Confluent Connect S3 Sink connector with configuration to access Oracle Object Storage.
 
 Note: We are setting the below parameters with OCI specific values (**not AWS values**):
 
@@ -115,7 +107,6 @@ Similarly replace the below with the values which apply for your implementation:
        }
     }'
 
-
 ## View Bucket and Objects
 Go to OCI Console and navigate to Object Storage:  
 
@@ -129,16 +120,11 @@ Object Content:
 
 ![](../images/object_content.PNG)
 
-
-
 ## Troubleshooting
 To view the logs, go here on worker nodes (cf-worker-<n>)
 
     less /opt/confluent/logs/connectDistributed.out
 
-
-
 ## References:
 * Oracle Object Storage Amazon S3 Compatibility API Documentation: [https://docs.cloud.oracle.com/iaas/Content/Object/Tasks/s3compatibleapi.htm](https://docs.cloud.oracle.com/iaas/Content/Object/Tasks/s3compatibleapi.htm)
-
 * Confluent Kafka Connect S3 Documentation: [https://docs.confluent.io/current/connect/kafka-connect-s3/index.html](https://docs.confluent.io/current/connect/kafka-connect-s3/index.html)
