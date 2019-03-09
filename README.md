@@ -1,5 +1,5 @@
 # oci-terraform-dse
-[simple](simple) is a Terraform module that will deploy Confluent on OCI.  It supports both the Community and Commercial versions.  Instructions on how to use it are below.
+[terraform](terraform) contains a Terraform module that will deploy Confluent on OCI.  It supports both the Community and Commercial versions.  Instructions on how to use it are below.
 
 ![](./images/00%20-%20architecture.png)
 
