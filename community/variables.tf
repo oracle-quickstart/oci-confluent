@@ -24,7 +24,7 @@ variable "ssh_private_key" {}
 variable "confluent" {
   type = "map"
   default = {
-    edition = "Confluent Community"
+    edition = "Community"
     version = "5.1.2"
   }
 }

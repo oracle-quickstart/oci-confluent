@@ -1,10 +1,8 @@
 echo "Running rest.sh"
 
 echo "Got the parameters:"
-echo adminUsername \'$adminUsername\'
-echo adminPassword \'$adminPassword\'
 echo version \'$version\'
-echo services \'$services\'
+echo edition \'$edition\'
 
 #######################################################
 ################# Turn Off the Firewall ###############

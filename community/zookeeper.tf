@@ -20,6 +20,8 @@ resource "oci_core_instance" "zookeeper" {
     ssh_authorized_keys = "${var.ssh_public_key}"
     user_data = "${base64encode(join("\n", list(
       "#!/usr/bin/env bash",
+      "version=${var.confluent["version"]}",
+      "version=${var.confluent["edition"]}",
       file("../scripts/zookeeper.sh")
     )))}"
   }

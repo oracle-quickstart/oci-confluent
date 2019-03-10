@@ -1,10 +1,8 @@
 echo "Running broker.sh"
 
 echo "Got the parameters:"
-echo adminUsername \'$adminUsername\'
-echo adminPassword \'$adminPassword\'
 echo version \'$version\'
-echo services \'$services\'
+echo edition \'$edition\'
 
 #######################################################
 ################# Turn Off the Firewall ###############
@@ -14,13 +12,12 @@ service firewalld stop
 chkconfig firewalld off
 
 #######################################################
-############### Install the Kafka Broker ##############
+################### Install Confluent #################
 #######################################################
-echo "Installing the Kafka Broker..."
+echo "Installing Confluent..."
 
 # Here's the install doc:
 # https://docs.confluent.io/current/installation/installing_cp/rhel-centos.html#systemd-rhel-centos-install
-
 
 # 1. Install the curl and which tools.
 yum install curl which
@@ -30,8 +27,7 @@ rpm --import https://packages.confluent.io/rpm/5.1/archive.key
 
 # 3. Navigate to /etc/yum.repos.d/ and create a file named confluent.repo with these contents.
 # This adds the Confluent repository.
-echo "
-[Confluent.dist]
+echo "[Confluent.dist]
 name=Confluent repository (dist)
 baseurl=https://packages.confluent.io/rpm/5.1/7
 gpgcheck=1
