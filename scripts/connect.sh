@@ -1,10 +1,5 @@
 echo "Running connect.sh"
 
-echo "Got the parameters:"
-echo version \'$version\'
-echo edition \'$edition\'
-
-
 #######################################################
 ################# Configure Confluent #################
 #######################################################

@@ -5,7 +5,6 @@ echo "Got the parameters:"
 echo version \'$version\'
 echo edition \'$edition\'
 
-
 #######################################################
 ################# Turn Off the Firewall ###############
 #######################################################
