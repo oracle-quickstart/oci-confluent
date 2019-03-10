@@ -32,7 +32,7 @@ variable "confluent" {
 variable "broker" {
   type = "map"
   default = {
-    shape      = "VM.Standard.E2.4"
+    shape      = "VM.Standard.2.4"
     node_count = 3
     disk_count = 1
     disk_size  = 700
@@ -42,7 +42,7 @@ variable "broker" {
 variable "zookeeper" {
   type = "map"
   default = {
-    shape      = "VM.Standard.E2.2"
+    shape      = "VM.Standard.2.2"
     node_count = 3
   }
 }
@@ -50,7 +50,7 @@ variable "zookeeper" {
 variable "connect" {
   type = "map"
   default = {
-    shape      = "VM.Standard.E2.2"
+    shape      = "VM.Standard.2.2"
     node_count = 2
   }
 }
@@ -58,7 +58,7 @@ variable "connect" {
 variable "rest" {
   type = "map"
   default = {
-    shape      = "VM.Standard.E2.2"
+    shape      = "VM.Standard.2.2"
     node_count = 2
   }
 }
