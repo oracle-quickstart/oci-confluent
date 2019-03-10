@@ -3,7 +3,8 @@ resource "oci_core_instance" "rest" {
   compartment_id      = "${var.compartment_ocid}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
   shape               = "${var.rest["shape"]}"
-  subnet_id           = "${oci_core_subnet.public_subnet.id}"
+  subnet_id           = "${oci_core_subnet.subnet.id}"
+  fault_domain        = "${lookup(data.oci_identity_fault_domains.fault_domains.fault_domains[count.index%3],"name")}"
 
   source_details {
     source_id   = "${var.images[var.region]}"
@@ -11,7 +12,7 @@ resource "oci_core_instance" "rest" {
   }
 
   create_vnic_details {
-    subnet_id      = "${oci_core_subnet.public_subnet.id}"
+    subnet_id      = "${oci_core_subnet.subnet.id}"
     hostname_label = "rest-${count.index}"
   }
 

@@ -3,7 +3,7 @@ resource "oci_core_instance" "zookeeper" {
   compartment_id      = "${var.compartment_ocid}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
   shape               = "${var.zookeeper["shape"]}"
-  subnet_id           = "${oci_core_subnet.private_subnet.id}"
+  subnet_id           = "${oci_core_subnet.subnet.id}"
 
   source_details {
     source_id   = "${var.images[var.region]}"
@@ -11,8 +11,8 @@ resource "oci_core_instance" "zookeeper" {
   }
 
   create_vnic_details {
-    subnet_id      = "${oci_core_subnet.private_subnet.id}"
-    hostname_label = "zookeeper-${count.index}"
+    subnet_id        = "${oci_core_subnet.subnet.id}"
+    hostname_label   = "zookeeper-${count.index}"
     assign_public_ip = "false"
   }
 
