@@ -19,9 +19,6 @@ echo "Installing Confluent..."
 # Here's the install doc:
 # https://docs.confluent.io/current/installation/installing_cp/rhel-centos.html#systemd-rhel-centos-install
 
-# 1. Install the curl and which tools.
-yum install curl which
-
 # 2. Install the Confluent Platform public key. This key is used to sign packages in the YUM repository.
 rpm --import https://packages.confluent.io/rpm/5.1/archive.key
 
@@ -49,4 +46,9 @@ enabled=1
 
 # Confluent Platform using only Confluent Community components
 yum clean all
-yum install confluent-community-2.11
+yum install -y confluent-community-2.11
+
+#######################################################
+################# Configure Confluent #################
+#######################################################
+echo "Configuring Confluent..."
