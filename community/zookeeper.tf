@@ -13,7 +13,6 @@ resource "oci_core_instance" "zookeeper" {
   create_vnic_details {
     subnet_id        = "${oci_core_subnet.subnet.id}"
     hostname_label   = "zookeeper-${count.index}"
-    assign_public_ip = "false"
   }
 
   metadata {
