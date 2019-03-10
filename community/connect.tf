@@ -4,7 +4,6 @@ resource "oci_core_instance" "connect" {
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
   shape               = "${var.broker["shape"]}"
   subnet_id           = "${oci_core_subnet.subnet.id}"
-  fault_domain        = "${lookup(data.oci_identity_fault_domains.fault_domains.fault_domains[count.index%3],"name")}"
 
   source_details {
     source_id   = "${var.images[var.region]}"
@@ -18,7 +17,6 @@ resource "oci_core_instance" "connect" {
 
   metadata {
     ssh_authorized_keys = "${var.ssh_public_key}"
-
     user_data = "${base64encode(join("\n", list(
       "#!/usr/bin/env bash",
       file("../scripts/connect.sh")
