@@ -49,6 +49,8 @@ yum clean all
 yum install -y confluent-community-2.11
 
 #######################################################
-################# Configure Confluent #################
+################# Configure ZooKeeper #################
 #######################################################
-echo "Configuring Confluent..."
+echo "Configuring ZooKeeper..."
+
+# 1. Navigate to the ZooKeeper properties file (/etc/kafka/zookeeper.properties) file and modify as shown.
