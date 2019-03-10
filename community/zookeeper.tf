@@ -29,6 +29,6 @@ resource "oci_core_instance" "zookeeper" {
   count = "${var.zookeeper["node_count"]}"
 }
 
-output "Zookeeper Private IPs" {
-  value = "${join(",", oci_core_instance.zookeeper.*.private_ip)}"
+output "Zookeeper Public IPs" {
+  value = "${join(",", oci_core_instance.zookeeper.*.public_ip)}"
 }
