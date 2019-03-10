@@ -2,8 +2,8 @@ resource "oci_core_instance" "rest" {
   display_name        = "rest-${count.index}"
   compartment_id      = "${var.compartment_ocid}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
-  shape               = "${var.broker["shape"]}"
-  subnet_id           = "${oci_core_subnet.subnet.id}"
+  shape               = "${var.rest["shape"]}"
+  subnet_id           = "${oci_core_subnet.public_subnet.id}"
 
   source_details {
     source_id   = "${var.images[var.region]}"
@@ -11,7 +11,7 @@ resource "oci_core_instance" "rest" {
   }
 
   create_vnic_details {
-    subnet_id      = "${oci_core_subnet.subnet.id}"
+    subnet_id      = "${oci_core_subnet.public_subnet.id}"
     hostname_label = "rest-${count.index}"
   }
 

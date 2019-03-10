@@ -1,9 +1,10 @@
-resource "oci_core_instance" "connect" {
-  display_name        = "connect-${count.index}"
-  compartment_id      = "${var.compartment_ocid}"
+/* bastion instance */
+
+resource "oci_core_instance" "bastion" {
+  display_name        = "bastion-${count.index}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
-  shape               = "${var.broker["shape"]}"
-  subnet_id           = "${oci_core_subnet.public_subnet.id}"
+  compartment_id      = "${var.compartment_ocid}"
+  shape               = "${var.bastion["shape"]}"
 
   source_details {
     source_id   = "${var.images[var.region]}"
@@ -12,7 +13,7 @@ resource "oci_core_instance" "connect" {
 
   create_vnic_details {
     subnet_id      = "${oci_core_subnet.public_subnet.id}"
-    hostname_label = "connect-${count.index}"
+    hostname_label = "bastion-${count.index}"
   }
 
   metadata {
@@ -20,13 +21,13 @@ resource "oci_core_instance" "connect" {
 
     user_data = "${base64encode(join("\n", list(
       "#!/usr/bin/env bash",
-      file("../scripts/connect.sh")
+      file("../scripts/bastion.sh")
     )))}"
   }
 
-  count = "${var.connect["node_count"]}"
+  count = "${var.bastion["node_count"]}"
 }
 
-output "Kafka Connect Public IPs" {
-  value = "${join(",", oci_core_instance.connect.*.public_ip)}"
+output "Bastion Public IPs" {
+  value = "${join(",", oci_core_instance.bastion.*.public_ip)}"
 }

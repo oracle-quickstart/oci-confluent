@@ -29,20 +29,28 @@ variable "confluent" {
   }
 }
 
+variable "bastion" {
+  type = "map"
+  default = {
+    shape = "VM.Standard2.1"
+    node_count = 1
+  }
+}
+
 variable "broker" {
   type = "map"
   default = {
-    shape = "VM.Standard.E2.4"
+    shape = "VM.Standard2.1"
     node_count = 3
     disk_count = 1
-    disk_size = 700
+    disk_size = 50
   }
 }
 
 variable "zookeeper" {
   type = "map"
   default = {
-    shape = "VM.Standard.E2.2"
+    shape = "VM.Standard2.1"
     node_count = 3
   }
 }
@@ -50,7 +58,7 @@ variable "zookeeper" {
 variable "connect" {
   type = "map"
   default = {
-    shape = "VM.Standard.E2.2"
+    shape = "VM.Standard2.1"
     node_count = 2
   }
 }
@@ -58,7 +66,7 @@ variable "connect" {
 variable "rest" {
   type = "map"
   default = {
-    shape = "VM.Standard.E2.2"
+    shape = "VM.Standard2.1"
     node_count = 2
   }
 }
@@ -80,6 +88,8 @@ variable "images" {
   }
 }
 
+variable "vpc-cidr" { default = "10.0.0.0/16" }
+variable "ssh_user" { default = "opc" }
 
 #############Stuff from previous template version
 
@@ -93,56 +103,5 @@ variable "ConfluentSecurity" { default = "Disabled" }
 
 
 ##################
-stuff that shouldn't be in env vars
+#stuff that shouldn't be in env vars
 
-## Authentication details
-export TF_VAR_tenancy_ocid="<replace with your tenancy ocid"
-export TF_VAR_user_ocid="<replace with your user ocid>"
-export TF_VAR_fingerprint="<replace with your OCI key fingerprint>"
-export TF_VAR_private_key_path=/home/opc/.oci/oci_api_key.pem
-
-### Region
-export TF_VAR_region="us-ashburn-1"
-
-### Compartment
-export TF_VAR_compartment_ocid="<replace with your compartment ocid>"
-
-### Public/private keys used on the instance
-export TF_VAR_ssh_public_key=$(cat /home/opc/.ssh/id_rsa.pub)
-export TF_VAR_ssh_private_key=$(cat /home/opc/.ssh/id_rsa)
-
-## The path to the file, not the content of the file
-export TF_VAR_ssh_private_key_path="/home/opc/.ssh/id_rsa"
-
-
-### An AD to deploy the Confluent platform. Valid values: 1,2,3 for regions with 3 ADs
-export TF_VAR_AD="2"
-
-### Set the number of Broker Nodes - this allows N-Node scaling for Brokers
-export TF_VAR_BrokerNodeCount="3"
-
-### Set the number of Worker Nodes - this allows N-Node scaling for Workers
-export TF_VAR_WorkerNodeCount="2"
-
-### Set the number of Zookeeper Nodes - this allows N-Node scaling for Zookeepers
-## Number of independent Zookeepers (if 0, zookeeper will be deployed on the Kafka brokers). Valid values: 0,1,3,5
-export TF_VAR_ZookeeperNodeCount="0"
-
-
-## Customize the shape to be used for Broker Host
-export TF_VAR_BrokerInstanceShape="VM.Standard1.2"
-
-## Customize the shape to be used for Worker Host
-export TF_VAR_WorkerInstanceShape="VM.Standard1.1"
-
-## Customize the shape to be used for Zookeeper Host
-export TF_VAR_ZookeeperInstanceShape="VM.Standard1.1"
-
-## Block Storage in GiB for Broker Node
-export TF_VAR_BrokerNodeStorage="1024"
-
-### Confluent Cluster Info
-export TF_VAR_ClusterName="ocicf"
-export TF_VAR_ConfluentEdition="Confluent Enterprise"
-export TF_VAR_ConfluentVersion="5.0.0"
-export TF_VAR_ConfluentSecurity="Disabled"
