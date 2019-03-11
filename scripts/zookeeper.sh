@@ -24,5 +24,5 @@ autopurge.purgeInterval=24
 nodeIndex=`hostname | sed 's/zookeeper-//'`
 echo "'$nodeIndex'" > /var/lib/zookeeper/myid
 
-#echo "Starting ZooKeeper..."
+echo "Starting ZooKeeper..."
 systemctl start confluent-zookeeper

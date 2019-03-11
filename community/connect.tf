@@ -21,6 +21,7 @@ resource "oci_core_instance" "connect" {
       "#!/usr/bin/env bash",
       "version=${var.confluent["version"]}",
       "version=${var.confluent["edition"]}",
+      file("../scripts/firewall.sh"),
       file("../scripts/install.sh"),
       file("../scripts/connect.sh")
     )))}"

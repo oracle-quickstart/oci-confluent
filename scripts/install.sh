@@ -5,16 +5,6 @@ echo "Got the parameters:"
 echo version \'$version\'
 echo edition \'$edition\'
 
-#######################################################
-################# Turn Off the Firewall ###############
-#######################################################
-echo "Turning off the Firewall..."
-service firewalld stop
-chkconfig firewalld off
-
-#######################################################
-################### Install Confluent #################
-#######################################################
 echo "Installing Confluent..."
 
 # Here's the install doc:
@@ -47,4 +37,6 @@ enabled=1
 
 # Confluent Platform using only Confluent Community components
 yum clean all
+# Per Mitch, this is the Scala version.  Need to specify Confluent Version
+# https://twitter.com/Mr_mitchellh/status/1104875895477673984
 yum install -y confluent-community-2.11
