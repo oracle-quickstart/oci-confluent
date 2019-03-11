@@ -7,8 +7,7 @@ echo "Configuring ZooKeeper..."
 
 # 1. Navigate to the ZooKeeper properties file (/etc/kafka/zookeeper.properties) file and modify as shown.
 
-################ nodes are hardcoded to three right now.  Come back and fix this later....
-
+###### nodes are hardcoded to three right now.  Come back and fix this later....
 echo "tickTime=2000
 dataDir=/var/lib/zookeeper/
 clientPort=2181
@@ -24,7 +23,7 @@ autopurge.purgeInterval=24
 nodeIndex=`hostname | sed 's/zookeeper-//'`
 echo "'$nodeIndex'" > /var/lib/zookeeper/myid
 
-########## unclear if any of this is needed... try to remove....
+###### unclear if any of this is needed... try to remove....
 chown cp-kafka /var/lib/zookeeper/myid
 chgrp confluent /var/lib/zookeeper/myid
 chmod 666 /var/lib/zookeeper/myid
