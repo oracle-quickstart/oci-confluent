@@ -40,6 +40,4 @@ enabled=1
 
 # Confluent Platform using only Confluent Community components
 yum clean all
-# Per Mitch, this is the Scala version.  Need to specify Confluent Version
-# https://twitter.com/Mr_mitchellh/status/1104875895477673984
 yum install -y confluent-community-2.11
