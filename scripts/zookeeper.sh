@@ -31,5 +31,9 @@ chown cp-kafka /var/lib/zookeeper/myid
 chgrp confluent /var/lib/zookeeper/myid
 chmod 666 /var/lib/zookeeper/myid
 
+# this came from a suggestion in the logs...
+chown cp-kafka:confluent /var/log/confluent
+chmod u+wx,g+wx,o= /var/log/confluent
+
 echo "Starting ZooKeeper..."
 systemctl start confluent-zookeeper
