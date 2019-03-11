@@ -9,14 +9,16 @@ echo "Configuring ZooKeeper..."
 
 ################ nodes are hardcoded to three right now.  Come back and fix this later....
 
+cp /etc/kafka/zookeeper.properties /etc/kafka/zookeeper.properties.bak
+
 echo "tickTime=2000
 dataDir=/var/lib/zookeeper/
 clientPort=2181
 initLimit=5
 syncLimit=2
-server.0=zookeeper-0:2888:3888
-server.1=zookeeper-1:2888:3888
-server.2=zookeeper-2:2888:3888
+server.1=zookeeper-0:2888:3888
+server.2=zookeeper-1:2888:3888
+server.3=zookeeper-2:2888:3888
 autopurge.snapRetainCount=3
 autopurge.purgeInterval=24
 " > /etc/kafka/zookeeper.properties
