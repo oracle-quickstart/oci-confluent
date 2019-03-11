@@ -1,6 +1,3 @@
 echo "Running connect.sh"
 
-#######################################################
-################# Configure Confluent #################
-#######################################################
-echo "Configuring Confluent..."
+echo "Configuring Confluent Connect..."

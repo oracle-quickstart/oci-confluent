@@ -1,6 +1,3 @@
 echo "Running broker.sh"
 
-#######################################################
-################# Configure Confluent #################
-#######################################################
-echo "Configuring Confluent..."
+echo "Configuring Kafka Broker..."

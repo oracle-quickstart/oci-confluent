@@ -1,6 +1,3 @@
 echo "Running rest.sh"
 
-#######################################################
-################# Configure Confluent #################
-#######################################################
-echo "Configuring Confluent..."
+echo "Configuring REST Proxy..."
