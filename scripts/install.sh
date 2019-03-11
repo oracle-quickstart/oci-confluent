@@ -5,6 +5,9 @@ echo "Got the parameters:"
 echo version \'$version\'
 echo edition \'$edition\'
 
+echo "Installing Java..."
+yum install -y java
+
 echo "Installing Confluent..."
 
 # Here's the install doc:
