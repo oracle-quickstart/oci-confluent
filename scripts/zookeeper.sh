@@ -9,8 +9,6 @@ echo "Configuring ZooKeeper..."
 
 ################ nodes are hardcoded to three right now.  Come back and fix this later....
 
-cp /etc/kafka/zookeeper.properties /etc/kafka/zookeeper.properties.bak
-
 echo "tickTime=2000
 dataDir=/var/lib/zookeeper/
 clientPort=2181
@@ -26,12 +24,12 @@ autopurge.purgeInterval=24
 nodeIndex=`hostname | sed 's/zookeeper-//'`
 echo "'$nodeIndex'" > /var/lib/zookeeper/myid
 
-# unclear if any of this is needed...
+########## unclear if any of this is needed... try to remove....
 chown cp-kafka /var/lib/zookeeper/myid
 chgrp confluent /var/lib/zookeeper/myid
 chmod 666 /var/lib/zookeeper/myid
 
-# this came from a suggestion in the logs...
+###### this came from a suggestion in the logs... check if needed and maybe remove....
 chown cp-kafka:confluent /var/log/confluent
 chmod u+wx,g+wx,o= /var/log/confluent
 
