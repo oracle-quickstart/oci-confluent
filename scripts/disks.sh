@@ -1,4 +1,5 @@
 
+echo "Running disks.sh"
 
 # iscsiadm discovery/login
 # this can loop over various ip's but needs to only attempt disks that actually
