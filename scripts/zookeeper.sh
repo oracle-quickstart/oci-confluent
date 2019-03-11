@@ -21,7 +21,7 @@ autopurge.purgeInterval=24
 " > /etc/kafka/zookeeper.properties
 
 nodeIndex=`hostname | sed 's/zookeeper-//'`
-echo "'$nodeIndex'" > /var/lib/zookeeper/myid
+echo "$nodeIndex" > /var/lib/zookeeper/myid
 
 ###### unclear if any of this is needed... try to remove....
 chown cp-kafka /var/lib/zookeeper/myid
