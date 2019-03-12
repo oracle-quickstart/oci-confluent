@@ -8,7 +8,7 @@ echo "Configuring Kafka Broker..."
 # https://docs.confluent.io/current/installation/installing_cp/rhel-centos.html#kafka
 
 sed -i "s/^zookeeper\.connect=localhost\:2181/zookeeper\.connect=$zookeeperConnect/g" /etc/kafka/server.properties
-sed -i "s/^log.dirs=\/var\/lib\/kafka/log.dirs=$logDirs/g" /etc/kafka/server.properties
+#sed -i "s/^log.dirs=\/var\/lib\/kafka/log.dirs=\\$logDirs/g" /etc/kafka/server.properties
 
 nodeIndex=`hostname | sed 's/broker-//'`
 echo "$nodeIndex"
