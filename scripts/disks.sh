@@ -21,6 +21,7 @@ iscsiadm -m node -o update -T $iqn -n node.startup -v automatic
 iscsiadm -m node -T $iqn -p 169.254.2.2:3260 -l
 
 # mdadm raid possible here, currently hard coded to use sdb
+mke2fs -F -t ext4 -b 4096 -E lazy_itable_init=1 -O sparse_super,dir_index,extent,has_journal,uninit_bg -m1 /dev/sdb
 
 logDirs="/data"
 mkdir -p $logDirs
