@@ -1,8 +1,8 @@
-resource "oci_core_instance" "zookeeper" {
-  display_name        = "zookeeper-${count.index}"
+resource "oci_core_instance" "schema_registry" {
+  display_name        = "schema_registry-${count.index}"
   compartment_id      = "${var.compartment_ocid}"
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
-  shape               = "${var.zookeeper["shape"]}"
+  shape               = "${var.broker["shape"]}"
   subnet_id           = "${oci_core_subnet.subnet.id}"
 
   source_details {
@@ -11,8 +11,8 @@ resource "oci_core_instance" "zookeeper" {
   }
 
   create_vnic_details {
-    subnet_id        = "${oci_core_subnet.subnet.id}"
-    hostname_label   = "zookeeper-${count.index}"
+    subnet_id      = "${oci_core_subnet.subnet.id}"
+    hostname_label = "schema-registry-${count.index}"
   }
 
   metadata {
@@ -21,16 +21,19 @@ resource "oci_core_instance" "zookeeper" {
       "#!/usr/bin/env bash",
       "version=${var.confluent["version"]}",
       "edition=${var.confluent["edition"]}",
+      "zookeeperNodeCount=${var.zookeeper["node_count"]}",
+      "brokerNodeCount=${var.broker["node_count"]}",
+      "schemaRegistryNodeCount=${var.schema_registry["node_count"]}",      
       file("../scripts/firewall.sh"),
       file("../scripts/install.sh"),
       file("../scripts/kafka_deploy_helper.sh"),
-      file("../scripts/zookeeper.sh")
+      file("../scripts/schema_registry.sh")
     )))}"
   }
 
-  count = "${var.zookeeper["node_count"]}"
+  count = "${var.schema_registry["node_count"]}"
 }
 
-output "Zookeeper Public IPs" {
-  value = "${join(",", oci_core_instance.zookeeper.*.public_ip)}"
+output "Kafka Schema Registry Public IPs" {
+  value = "${join(",", oci_core_instance.schema_registry.*.public_ip)}"
 }

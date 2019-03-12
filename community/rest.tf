@@ -20,9 +20,13 @@ resource "oci_core_instance" "rest" {
     user_data = "${base64encode(join("\n", list(
       "#!/usr/bin/env bash",
       "version=${var.confluent["version"]}",
-      "version=${var.confluent["edition"]}",
+      "edition=${var.confluent["edition"]}",
+      "zookeeperNodeCount=${var.zookeeper["node_count"]}",
+      "brokerNodeCount=${var.broker["node_count"]}",
+      "schemaRegistryNodeCount=${var.schema_registry["node_count"]}",      
       file("../scripts/firewall.sh"),
       file("../scripts/install.sh"),
+      file("../scripts/kafka_deploy_helper.sh"),      
       file("../scripts/rest.sh")
     )))}"
   }

@@ -63,6 +63,14 @@ variable "rest" {
   }
 }
 
+variable "schema_registry" {
+  type = "map"
+  default = {
+    shape      = "VM.Standard2.2"
+    node_count = 1
+  }
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Constants
 # You probably don't need to change these.
