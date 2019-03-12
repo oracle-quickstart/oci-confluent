@@ -88,3 +88,5 @@ variable "images" {
     us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaacss7qgb6vhojblgcklnmcbchhei6wgqisqmdciu3l4spmroipghq"
   }
 }
+
+variable "vpc-cidr" { default = "10.0.0.0/16" }

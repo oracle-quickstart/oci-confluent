@@ -31,15 +31,79 @@ resource "oci_core_security_list" "security_list" {
   compartment_id = "${var.compartment_ocid}"
   vcn_id         = "${oci_core_virtual_network.virtual_network.id}"
 
-  egress_security_rules = [{
-    protocol    = "All"
-    destination = "0.0.0.0/0"
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 22
+      "min" = 22
+    }
+    protocol = "6"
+    source   = "0.0.0.0/0"
   }]
 
   ingress_security_rules = [{
     protocol = "All"
+    source = "${var.vpc-cidr}"
+  }]
+  
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 9092
+      "min" = 9092
+    }
+    protocol = "6"
     source   = "0.0.0.0/0"
   }]
+
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 2181
+      "min" = 2181
+    }
+    protocol = "6"
+    source   = "${var.vpc-cidr}"
+  }]
+
+ ingress_security_rules = [{
+    tcp_options {
+      "max" = 8081
+      "min" = 8081
+    }
+    protocol = "6"
+    source = "0.0.0.0/0"
+  }]
+
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 8082
+      "min" = 8082
+    }
+    protocol = "6"
+    source = "0.0.0.0/0"
+  }]
+
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 8083
+      "min" = 8083
+    }
+    protocol = "6"
+    source = "0.0.0.0/0"
+  }]
+
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 8088
+      "min" = 8088
+    }
+    protocol = "6"
+    source = "0.0.0.0/0"
+  }]
+  
+  egress_security_rules = [{
+    protocol    = "All"
+    destination = "0.0.0.0/0"
+  }]
+  
 }
 
 resource "oci_core_subnet" "subnet" {
