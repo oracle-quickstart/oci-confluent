@@ -13,4 +13,12 @@ sed -i "s/^#schema\.registry\.url=http\:\/\/localhost\:8081/schema.registry.url=
 nodeIndex=`hostname | sed 's/rest-//'`
 sed -i "s/^#id=kafka-rest-test-server/id=kafka-rest-${nodeIndex}/g" $restConfig 
 
-#systemctl start confluent-kafka-rest
+# wait for all zookeepers to be up and running
+wait_for_zk_quorum
+# wait for all brokers to be up and running
+wait_for_brokers
+# wait for schema registry to be up and running
+wait_for_schema_registry
+
+echo "Starting REST Proxy service"
+systemctl start confluent-kafka-rest

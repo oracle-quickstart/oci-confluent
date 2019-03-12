@@ -22,4 +22,13 @@ done
 sed -i "s/^bootstrap\.servers=localhost\:9092/bootstrap\.servers=$brokerConnect/g" /etc/kafka/consumer.properties
 sed -i "s/^bootstrap\.servers=localhost\:9092/bootstrap\.servers=$brokerConnect/g" /etc/kafka/producer.properties
 
-#systemctl start confluent-kafka-connect
+
+# wait for all zookeepers to be up and running
+wait_for_zk_quorum
+# wait for all brokers to be up and running
+wait_for_brokers
+# wait for schema registry to be up and running
+wait_for_schema_registry
+
+echo "Starting Kafka Connect service"
+systemctl start confluent-kafka-connect

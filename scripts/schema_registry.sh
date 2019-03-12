@@ -10,6 +10,11 @@ sed -i "s/^kafkastore\.connection\.url=localhost\:2181/kafkastore\.connection\.u
 echo "kafkastore.zk.session.timeout.ms=300000" >> $schemaRegistryConfig
 echo "kafkastore.init.timeout.ms=300000" >> $schemaRegistryConfig
 
+# wait for all zookeepers to be up and running
+wait_for_zk_quorum
+# wait for all brokers to be up and running
+wait_for_brokers
 
-#systemctl start confluent-schema-registry
+echo "Starting Schema Registry service"
+systemctl start confluent-schema-registry
 
