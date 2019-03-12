@@ -32,6 +32,7 @@ That gives:
 
 ![](./images/03-tf-plan.png)
 
+This command details what will be deployed based on the `variables.tf` file.
 If that's good, we can go ahead and apply the deploy:
 
     terraform apply
