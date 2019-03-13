@@ -23,11 +23,12 @@ resource "oci_core_instance" "broker" {
       "edition=${var.confluent["edition"]}",
       "zookeeperNodeCount=${var.zookeeper["node_count"]}",
       "brokerNodeCount=${var.broker["node_count"]}",
-      "schemaRegistryNodeCount=${var.schema_registry["node_count"]}",      
+      "brokerDiskCount=${var.broker["disk_count"]}",
+      "schemaRegistryNodeCount=${var.schema_registry["node_count"]}",
       file("../scripts/firewall.sh"),
       file("../scripts/install.sh"),
       file("../scripts/disks.sh"),
-      file("../scripts/kafka_deploy_helper.sh"),  
+      file("../scripts/kafka_deploy_helper.sh"),
       file("../scripts/broker.sh")
     )))}"
   }
