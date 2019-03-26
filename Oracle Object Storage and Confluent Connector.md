@@ -73,6 +73,7 @@ Make sure, the config files contains the below lines:
 
 
 Do the steps on each of the Confluent Connect Nodes :
+
     ssh -i ~/.ssh/id_rsa opc@<ip address or connect instance>
     systemctl stop  confluent-kafka-connect 
     
@@ -87,8 +88,10 @@ Update this file:  /usr/lib/systemd/system/confluent-kafka-connect.service to se
     ....
 
 Then run 
+
     sudo systemctl daemon-reload 
     sudo systemctl restart confluent-kafka-connect 
+
 to apply new environments to confluent-kafka-connect 
 
 
@@ -152,8 +155,7 @@ To view the logs, go here on connect nodes (connect-<n>)
 
 * REST API commands for Kafka Connect
 
-
     curl -i -X GET -H "Accept:application/json"  -H  "Content-Type:application/json"  http://connect-0:8083/connectors/
-
     curl -i -X DELETE -H "Accept:application/json"  -H  "Content-Type:application/json"  http://connect-0:8083/connectors/s3-sink-oci-obj-storage
+    
 
