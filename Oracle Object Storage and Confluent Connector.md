@@ -104,17 +104,18 @@ Replace the above with values from prerequisites above.
 
 Similarly replace the below with the values which apply for your implementation:
 
-    "topics": "kafka_oci_object_storage_test"
+    "topics": "kafka-oci-object-storage-test"
     "s3.bucket.name": "kafka_sink_object_storage_bucket"
 
  I am using the REST API, so you can run it from anywhere as far as confluent worker nodes (cf-worker-1) are reachable. Command to run:
 
-    curl -i -X POST -H "Accept:application/json"  -H  "Content-Type:application/json" http://cf-worker-1:8083/connectors/   -d '{
+    export CONNECTURL=http://connect-0:8083
+    curl -i -X POST -H "Accept:application/json"  -H  "Content-Type:application/json" $CONNECTURL/connectors/   -d '{
      "name": "s3-sink-oci-obj-storage",
      "config": {
        "connector.class": "io.confluent.connect.s3.S3SinkConnector",
        "tasks.max": "1",
-       "topics": "kafka_oci_object_storage_test",
+       "topics": "kafka-oci-object-storage-test",
        "s3.region": "us-phoenix-1",
        "s3.bucket.name": "kafka_sink_object_storage_bucket",
        "s3.part.size": "5242880",
@@ -128,8 +129,9 @@ Similarly replace the below with the values which apply for your implementation:
        }
     }'
 
+
 ## View Bucket and Objects
-Go to OCI Console and navigate to Object Storage.  For us-phoenix-1 go to https://console.us-phoenix-1.oraclecloud.com.
+Go to OCI Console and navigate to Object Storage.  For us-phoenix-1, go to https://console.us-phoenix-1.oraclecloud.com.
 
 Bucket View:
 
@@ -140,10 +142,18 @@ Object Content:
 ![](./images/object%20storage/05%20-%20object%20content.png)
 
 ## Troubleshooting
-To view the logs, go here on worker nodes (cf-worker-<n>)
+To view the logs, go here on connect nodes (connect-<n>)
 
-    less /opt/confluent/logs/connectDistributed.out
+    less /var/logs/messages
 
 ## References:
 * Oracle Object Storage Amazon S3 Compatibility API Documentation: https://docs.cloud.oracle.com/iaas/Content/Object/Tasks/s3compatibleapi.htm
 * Confluent Kafka Connect S3 Documentation: https://docs.confluent.io/current/connect/kafka-connect-s3
+
+* REST API commands for Kafka Connect
+
+
+    curl -i -X GET -H "Accept:application/json"  -H  "Content-Type:application/json"  http://connect-0:8083/connectors/
+
+    curl -i -X DELETE -H "Accept:application/json"  -H  "Content-Type:application/json"  http://connect-0:8083/connectors/s3-sink-oci-obj-storage
+
