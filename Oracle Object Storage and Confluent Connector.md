@@ -50,7 +50,6 @@ Run this on all Confluent connect nodes.(example: connect-0, connect-1):
 
 Update connect-distributed.properties to use JsonConverter and schemas.enable set to false on all connect nodes.  In my example, I am using JSON messages and hence the below change is needed, since by default, it comes configured with AvroConverter  
 
-On each of the Confluent Connnect Nodes:
 
     vim /opt/confluent/etc/kafka/connect-distributed.properties
 
@@ -75,7 +74,7 @@ Make sure, the config files contains the below lines:
 Do the steps on each of the Confluent Connect Nodes :
 
     ssh -i ~/.ssh/id_rsa opc@<ip address or connect instance>
-    systemctl stop  confluent-kafka-connect 
+ 
     
 Update this file:  /usr/lib/systemd/system/confluent-kafka-connect.service to set environment variables for AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.  The keys are labelled as AWS_xxxxx,  but its values needs to be set with the keys generated in OCI console.  
 
