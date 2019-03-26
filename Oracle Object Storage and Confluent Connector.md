@@ -110,7 +110,8 @@ Similarly replace the below with the values which apply for your implementation:
     "topics": "kafka-oci-object-storage-test"
     "s3.bucket.name": "kafka_sink_object_storage_bucket"
 
- I am using the REST API, so you can run it from anywhere as far as confluent worker nodes (cf-worker-1) are reachable. Command to run:
+ I am using the REST API, so you can run it from anywhere as far as confluent connect nodes are reachable. 
+ Command to run:
 
     export CONNECTURL=http://connect-0:8083
     curl -i -X POST -H "Accept:application/json"  -H  "Content-Type:application/json" $CONNECTURL/connectors/   -d '{
