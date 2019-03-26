@@ -27,26 +27,30 @@ Create a bucket in Oracle Object Storage using OCI console.  **eg: kafka_sink_ob
 ![](./images/object%20storage/02%20-%20create%20bucket.png)
 
 ## Configure Confluent to Access Object Storage
-Assuming you already have Confluent installed on OCI using this Github repo.  Let's create a topic using Confluent Control Center UI or command line or REST API.   **example: kafka_oci_object_storage_test.**
+Assuming you already have Confluent installed on OCI using this Github repo.  Let's create a topic from command line or using Confluent Control Center UI (Enterprise only).   **example: kafka-oci-object-storage-test**
 
 ![](./images/object%20storage/03%20-%20create%20topic.png)
+    Login to a broker instance:  ssh opc@<broker_instance>
+    sudo su 
+    [root@broker-0 opc]# /usr/bin/kafka-topics --zookeeper zookeeper-0:2181 --create --topic kafka-oci-object-storage-test --partitions 1 --replication-factor 3
+
 
 Produce a few messages using JSON with the value '{ "foo": "bar" }' to the topic created above.
-I am using the REST API, so you can run it from anywhere as far as confluent worker nodes (cf-worker-1) are reachable.
+I am using the REST API to publish 10 messages.
 
 Example:
+    
+    ssh -i ~/.ssh/id_rsa opc@<ip address of rest instance>
+    export RPURL=http://rest-0:8082
+    for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' $RPURL/topics/kafka-oci-object-storage-test ;   done;
 
-    ssh -i ~/.ssh/id_rsa opc@<ip address or cf-worker-1>
-    for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' http://cf-worker-1:8082/topics/kafka_oci_object_storage_test ;   done;
 
-Gracefully stop the connect-distributed daemon using the below command. Run this on all Confluent worker nodes.(example: cf-worker-1):
+Run this on all Confluent connect nodes.(example: connect-0, connect-1):
 
-    ssh -i ~/.ssh/id_rsa opc@<ip address or cf-worker-1>
-    ps -efw | grep "org.apache.kafka.connect.cli.ConnectDistributed" | grep -v "grep " |  gawk '{ print $2 }' | xargs sudo kill -15
 
-Update connect-distributed.properties to use JsonConverter and schemas.enable set to false on all worker nodes.  In my example, I am using JSON messages and hence the below change is needed, since by default, it comes configured with AvroConverter  
+Update connect-distributed.properties to use JsonConverter and schemas.enable set to false on all connect nodes.  In my example, I am using JSON messages and hence the below change is needed, since by default, it comes configured with AvroConverter  
 
-On each of the Confluent Worker Nodes (example: cf-worker-<n>):
+On each of the Confluent Connnect Nodes:
 
     vim /opt/confluent/etc/kafka/connect-distributed.properties
 
@@ -55,30 +59,39 @@ Make sure, the config files contains the below lines
     key.converter=org.apache.kafka.connect.json.JsonConverter
     value.converter=org.apache.kafka.connect.json.JsonConverter
 
-Or if using Avro, we could do this:
+and comment the below lines:  
 
-    key.converter=io.confluent.connect.avro.AvroConverter
-    value.converter=io.confluent.connect.avro.AvroConverter
+    #key.converter=io.confluent.connect.avro.AvroConverter
+    #value.converter=io.confluent.connect.avro.AvroConverter
 
-Converter specific settings can be passed in by prefixing the settings with the converter we want to apply it to:
+Make sure, the config files contains the below lines:
 
     key.converter.schemas.enable=false
     value.converter.schemas.enable=false
 
-Or the following:
 
-    key.converter.schemas.enable=true
-    value.converter.schemas.enable=true
 
-Configure Confluent worker nodes with credentials to access Object Storage ans start Kafka connect daemon.  The keys below are labelled as AWS_xxxxx,  but its values needs to be set with the keys generated in prerequisites.
 
-Do the steps on each of the Confluent Worker Nodes (example: cf-worker-<n>):
+Do the steps on each of the Confluent Connect Nodes :
+    ssh -i ~/.ssh/id_rsa opc@<ip address or connect instance>
+    systemctl stop  confluent-kafka-connect 
+    
+Update this file:  /usr/lib/systemd/system/confluent-kafka-connect.service to set environment variables for AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.  The keys are labelled as AWS_xxxxx,  but its values needs to be set with the keys generated in OCI console.  
 
-    ssh -i ~/.ssh/id_rsa opc@cf-worker-1
-    sudo su
-    AWS_ACCESS_KEY_ID=<replace with your OCI Object storage access key>
-    AWS_SECRET_ACCESS_KEY=<replace with your OCI Object storage secret key>
-    /opt/confluent/bin/connect-distributed -daemon /opt/confluent/etc/kafka/connect-distributed.properties
+    User=cp-kafka-connect
+    Group=confluent
+    Environment=AWS_SECRET_ACCESS_KEY=<replace with your OCI Object storage secret key>
+    Environment=AWS_ACCESS_KEY_ID=replace with your OCI Object storage access key>
+    ....
+    .... removed for brevity
+    ....
+
+Then run 
+    sudo systemctl daemon-reload 
+    sudo systemctl restart confluent-kafka-connect 
+to apply new environments to confluent-kafka-connect 
+
+
 
 Load the Confluent Connect S3 Sink connector with configuration to access Oracle Object Storage.
 
