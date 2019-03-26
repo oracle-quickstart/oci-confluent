@@ -7,7 +7,8 @@ Create an [Amazon S3 Compatibility API key.](https://docs.cloud.oracle.com/iaas/
 
 Identify your Object Storage Namespace, which is basically your tenancy name, since we will need it.   You can find it in OCI console, see screenshot below.  
 
-![](./images/object storage/01 - tenant.png)
+![](./images/objectstorage/01 - tenant.png)
+![](./images/object%20storage/01%20-%20tenant.png)
 
 Identify the Oracle Cloud Infrastructure region which you plan to use. eg:  us-phoenix-1,  us-ashburn-1, etc.  
 
