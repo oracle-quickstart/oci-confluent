@@ -30,54 +30,30 @@ Create a bucket in Oracle Object Storage using OCI console.  **eg: kafka_sink_ob
 Assuming you already have Confluent installed on OCI using this Github repo.  Let's create a topic from command line or using Confluent Control Center UI (Enterprise only).   **example: kafka-oci-object-storage-test**
 
 ![](./images/object%20storage/03%20-%20create%20topic.png)
-    Login to a broker instance:  ssh opc@<broker_instance>
-    sudo su 
-    [root@broker-0 opc]# /usr/bin/kafka-topics --zookeeper zookeeper-0:2181 --create --topic kafka-oci-object-storage-test --partitions 1 --replication-factor 3
+
+    Login to a broker instance:  ssh opc@<broker_instance> 
+    [opc@broker-0 opc]# /usr/bin/kafka-topics --zookeeper zookeeper-0:2181 --create --topic kafka-oci-object-storage-test --partitions 1 --replication-factor 3
 
 
-Produce a few messages using JSON with the value '{ "foo": "bar" }' to the topic created above.
-I am using the REST API to publish 10 messages.
+Add a few messages to the topic. I am using the REST API to publish 10 messages, so it can be done from any machine which has access to Kafka REST API endpoint. 
 
 Example:
     
-    ssh -i ~/.ssh/id_rsa opc@<ip address of rest instance>
     export RPURL=http://rest-0:8082
-    for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' $RPURL/topics/kafka-oci-object-storage-test ;   done;
-
-
-Run this on all Confluent connect nodes.(example: connect-0, connect-1):
-
-
-Update connect-distributed.properties to use JsonConverter and schemas.enable set to false on all connect nodes.  In my example, I am using JSON messages and hence the below change is needed, since by default, it comes configured with AvroConverter  
-
-
-    vim /opt/confluent/etc/kafka/connect-distributed.properties
-
-Make sure, the config files contains the below lines
-
-    key.converter=org.apache.kafka.connect.json.JsonConverter
-    value.converter=org.apache.kafka.connect.json.JsonConverter
-
-and comment the below lines:  
-
-    #key.converter=io.confluent.connect.avro.AvroConverter
-    #value.converter=io.confluent.connect.avro.AvroConverter
-
-Make sure, the config files contains the below lines:
-
-    key.converter.schemas.enable=false
-    value.converter.schemas.enable=false
-
+    [opc@connect-0 log]# for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.avro.v2+json"       -H "Accept: application/vnd.kafka.v2+json"       --data '{"key_schema": "{\"name\":\"user_id\"  ,\"type\": \"int\"   }", "value_schema": "{\"type\": \"record\", \"name\": \"User\", \"fields\": [{\"name\": \"name\", \"type\": \"string\"}]}", "records": [{"key" : 1 , "value": {"name": "testUser"}}]}'       $RPURL/topics/kafka-oci-object-storage-test ;   done;
+ 
 
 
 
 Do the steps on each of the Confluent Connect Nodes :
 
-    ssh -i ~/.ssh/id_rsa opc@<ip address or connect instance>
+    ssh -i ~/.ssh/oci opc@<ip address or connect instance>
  
     
 Update this file:  /usr/lib/systemd/system/confluent-kafka-connect.service to set environment variables for AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.  The keys are labelled as AWS_xxxxx,  but its values needs to be set with the keys generated in OCI console.  
 
+    sudo vim /usr/lib/systemd/system/confluent-kafka-connect.service
+    
     User=cp-kafka-connect
     Group=confluent
     Environment=AWS_SECRET_ACCESS_KEY=<replace with your OCI Object storage secret key>
@@ -91,15 +67,15 @@ Then run
     sudo systemctl daemon-reload 
     sudo systemctl restart confluent-kafka-connect 
 
-to apply new environments to confluent-kafka-connect 
+to apply new environments variables to confluent-kafka-connect service. 
 
 
 
-Load the Confluent Connect S3 Sink connector with configuration to access Oracle Object Storage.
+Load the Confluent Connect S3 Sink connector with configuration to access OCI Object Storage.
 
 Note: We are setting the below parameters with OCI specific values (not AWS values):
 
-    "s3.region": "us-phoenix-1"
+    "s3.region": "us-phoenix-1"    (replace with region where bucket was created)
     "store.url": "intmahesht.compat.objectstorage.us-phoenix-1.oraclecloud.com"
 
 Replace the above with values from prerequisites above.
@@ -108,7 +84,7 @@ Similarly replace the below with the values which apply for your implementation:
 
     "topics": "kafka-oci-object-storage-test"
     "s3.bucket.name": "kafka_sink_object_storage_bucket"
-
+    
  I am using the REST API, so you can run it from anywhere as far as confluent connect nodes are reachable. 
  Command to run:
 
@@ -125,6 +101,12 @@ Similarly replace the below with the values which apply for your implementation:
        "flush.size": "3",
        "storage.class": "io.confluent.connect.s3.storage.S3Storage",
        "store.url": "intmahesht.compat.objectstorage.us-phoenix-1.oraclecloud.com",
+       "key.converter": "io.confluent.connect.avro.AvroConverter",
+       "value.converter": "io.confluent.connect.avro.AvroConverter",
+       "key.converter.schemas.enable": "true",
+       "value.converter.schemas.enable": "true",
+       "key.converter.schema.registry.url": "http://schema-registry-0:8081",
+       "value.converter.schema.registry.url": "http://schema-registry-0:8081",
        "format.class": "io.confluent.connect.s3.format.json.JsonFormat",
        "schema.generator.class": "io.confluent.connect.storage.hive.schema.DefaultSchemaGenerator",
        "partitioner.class": "io.confluent.connect.storage.partitioner.DefaultPartitioner",
