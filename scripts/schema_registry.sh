@@ -16,5 +16,6 @@ wait_for_zk_quorum
 wait_for_brokers
 
 echo "Starting Schema Registry service"
+systemctl enable confluent-zookeeper
 systemctl start confluent-schema-registry
 

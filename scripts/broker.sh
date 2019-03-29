@@ -22,4 +22,5 @@ chown cp-kafka:confluent $logDirs/kafka
 wait_for_zk_quorum
 
 echo "Starting Kafka Broker service"
+systemctl enable confluent-zookeeper
 systemctl start confluent-kafka

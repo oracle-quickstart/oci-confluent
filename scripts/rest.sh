@@ -21,4 +21,5 @@ wait_for_brokers
 wait_for_schema_registry
 
 echo "Starting REST Proxy service"
+systemctl enable confluent-kafka-rest
 systemctl start confluent-kafka-rest

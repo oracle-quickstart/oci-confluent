@@ -30,4 +30,5 @@ chgrp confluent /var/lib/zookeeper/myid
 chmod 666 /var/lib/zookeeper/myid
 
 echo "Starting ZooKeeper..."
+systemctl enable confluent-zookeeper
 systemctl start confluent-zookeeper

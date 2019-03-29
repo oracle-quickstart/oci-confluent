@@ -31,4 +31,5 @@ wait_for_brokers
 wait_for_schema_registry
 
 echo "Starting Kafka Connect service"
+systemctl enable confluent-zookeeper
 systemctl start confluent-kafka-connect
