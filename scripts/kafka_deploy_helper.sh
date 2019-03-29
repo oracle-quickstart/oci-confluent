@@ -71,16 +71,18 @@ wait_for_zk_quorum() {
 
 # function to check if all brokers are running or else wait
 wait_for_brokers() {
-  command="runningBrokers=$( echo "ls /brokers/ids" | /usr/bin/zookeeper-shell ${zookeeperConnect%%,*} | grep -v "zk\:" |  grep '^\[' | tr -d "[:punct:]" | wc -w )"
+  runningBrokers="$( echo "ls /brokers/ids" | /usr/bin/zookeeper-shell ${zookeeperConnect%%,*} | grep -v "zk\:" |  grep '^\[' | tr -d "[:punct:]" | wc -w )"
   # We don't need all brokers to be up, we just need a few, say 5, if the cluster is much larger
   local targetBrokers=$brokerNodeCount
   [ $targetBrokers -gt 5 ] && targetBrokers=5
-  eval "$command"
+  #eval "$command"
   while [ ${runningBrokers:-0} -lt $targetBrokers -a $counter -gt 0 ] ; do
     sleep $sleepTime
     counter=$((counter-1))
     echo $counter
-    eval "$command"
+    #eval "$command"
+    runningBrokers="$( echo "ls /brokers/ids" | /usr/bin/zookeeper-shell ${zookeeperConnect%%,*} | grep -v "zk\:" |  grep '^\[' | tr -d "[:punct:]" | wc -w )"
+    echo "command errrocode = $? ;  runningBrokers = $runningBrokers" 
   done
 
   [ $counter -le 0 ] && return 1
