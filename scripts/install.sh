@@ -40,4 +40,8 @@ enabled=1
 
 # Confluent Platform using only Confluent Community components
 yum clean all
-yum install -y confluent-community-2.11
+if [ $edition = "Enterprise" ]; then
+  yum install -y confluent-platform-2.11
+else
+  yum install -y confluent-community-2.11
+fi

@@ -13,6 +13,13 @@ sed -i "s/^value\.converter=org\.apache\.kafka\.connect\.json\.JsonConverter/val
 echo "key.converter.schema.registry.url=http://$schemaRegistryConnect" >> $connectDistributedConfig
 echo "value.converter.schema.registry.url=http://$schemaRegistryConnect" >> $connectDistributedConfig
 
+
+if [ $edition = "Enterprise" ]; then
+  # Interceptor setup
+  echo "consumer.interceptor.classes=io.confluent.monitoring.clients.interceptor.MonitoringConsumerInterceptor" >>  $connectDistributedConfig
+  echo "producer.interceptor.classes=io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor" >>  $connectDistributedConfig
+fi
+
 for f in /etc/schema-registry/connect-*.properties ; do
   sed -i "s/^bootstrap.servers=localhost\:9092/bootstrap.servers=$brokerConnect/g" $f
   sed -i "s/^key\.converter\.schema\.registry\.url=http\:\/\/localhost\:8081/key\.converter\.schema\.registry\.url=http\:\/\/$schemaRegistryConnect/g" $f
