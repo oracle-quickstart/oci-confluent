@@ -13,10 +13,12 @@ Now, you'll want a local copy of this repo.  You can make that with the commands
     git clone https://github.com/oci-quickstart/oci-confluent.git
 
 If you want to deploy community edition:
+
     cd oci-confluent/community
     ls
     
 If you want to deploy enterprise edition (comes with 30 day free trial):
+
     cd oci-confluent/enterprise
     ls
 
@@ -46,10 +48,10 @@ If that's good, we can go ahead and apply the deploy:
 
 You'll need to enter `yes` when prompted.  The apply should take about five minutes to run.  Once complete, you'll see something like this:
 
-## For Community Edition
+#### For Community Edition
 ![](./images/04-tf-apply.png)
 
-## For Enterprise Edition
+#### For Enterprise Edition
 ![](./images/08-enterprise-tf-apply.png)
 
 When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running.  Those will wrap up asynchronously.  The cluster might take ten minutes.  Now is a good time to get a coffee.
