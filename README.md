@@ -79,3 +79,24 @@ Virtual Cloud Network (vcn) page:
 
 Instances page:
 ![](./images/06-instances.png)
+
+## Create Topic, Produce & Consume messages
+Let's test the cluster 
+
+#### Create Topic
+Login to a broker instance:  ssh opc@<broker_instance>.   If you install Enterprise edition,  you can also create a topic through the Confluent Control Center Web Console.  
+
+    [opc@broker-0 opc]# /usr/bin/kafka-topics --zookeeper zookeeper-0:2181 --create --topic demo --partitions 1 --replication-factor 3
+
+#### Produce Messages
+Add a few messages to the topic. I am using the REST API to publish 10 messages, so it can be done from any machine which has access to Kafka REST API endpoint. 
+
+Example:
+    
+    export RPURL=http://rest-0:8082
+    [opc@connect-0 log]# for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.avro.v2+json"       -H "Accept: application/vnd.kafka.v2+json"       --data '{"key_schema": "{\"name\":\"user_id\"  ,\"type\": \"int\"   }", "value_schema": "{\"type\": \"record\", \"name\": \"User\", \"fields\": [{\"name\": \"name\", \"type\": \"string\"}]}", "records": [{"key" : 1 , "value": {"name": "testUser"}}]}'       $RPURL/topics/demo ;   done;
+ 
+
+#### Consume Messages
+TBD
+
