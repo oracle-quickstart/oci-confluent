@@ -49,6 +49,12 @@ You can ssh into any of the instances by running a command like:
 `ssh -i ~/.ssh/oci opc@<instance ip>`
 
 
+
+## Confluent Control Center (Only in Enterprise edition) 
+![](./images/07-controlcenter.png)
+
+
+
 ## View the Cluster in OCI Console
 You can also login to the web console [here](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) to view the IaaS that is running from the
 deployment.
