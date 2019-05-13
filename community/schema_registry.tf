@@ -4,6 +4,7 @@ resource "oci_core_instance" "schema_registry" {
   availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[0],"name")}"
   shape               = "${var.broker["shape"]}"
   subnet_id           = "${oci_core_subnet.subnet.id}"
+  fault_domain        = "FAULT-DOMAIN-${(count.index%3)+1}"
 
   source_details {
     source_id   = "${var.images[var.region]}"
@@ -36,4 +37,10 @@ resource "oci_core_instance" "schema_registry" {
 
 output "Kafka Schema Registry Public IPs" {
   value = "${join(",", oci_core_instance.schema_registry.*.public_ip)}"
+}
+
+output "Schema Registry URL: " {
+value = <<END
+http://${oci_core_instance.schema_registry.*.private_ip[0]}:8081/
+END
 }

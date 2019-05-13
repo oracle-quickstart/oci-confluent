@@ -42,7 +42,7 @@ variable "broker" {
 variable "zookeeper" {
   type = "map"
   default = {
-    shape      = "VM.Standard2.2"
+    shape      = "VM.Standard2.1"
     node_count = 3
   }
 }
@@ -66,7 +66,7 @@ variable "rest" {
 variable "schema_registry" {
   type = "map"
   default = {
-    shape      = "VM.Standard2.2"
+    shape      = "VM.Standard2.1"
     node_count = 1
   }
 }
@@ -74,7 +74,7 @@ variable "schema_registry" {
 variable "ksql" {
   type = "map"
   default = {
-    shape      = "VM.Standard2.2"
+    shape      = "VM.Standard2.1"
     node_count = 2
   }
 }

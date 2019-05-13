@@ -35,7 +35,7 @@ variable "broker" {
     shape      = "VM.Standard2.4"
     node_count = 3
     disk_count = 1
-    disk_size  = 700
+    disk_size  = 50
   }
 }
 
@@ -70,6 +70,16 @@ variable "schema_registry" {
     node_count = 1
   }
 }
+
+
+variable "ksql" {
+  type = "map"
+  default = {
+    shape      = "VM.Standard2.1"
+    node_count = 2
+  }
+}
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Constants
