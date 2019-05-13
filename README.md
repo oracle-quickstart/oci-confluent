@@ -4,6 +4,9 @@ These are Terraform modules that deploy [Confluent Platform](https://www.conflue
 * [community](community) deploys the Community Edition
 * [enterprise](enterprise) deploys the Enterprise Edition
 
+## Architecture
+![](./images/00-architecture.png)
+
 ## Prerequisites
 First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
 
