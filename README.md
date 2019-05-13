@@ -55,7 +55,7 @@ You'll need to enter `yes` when prompted.  The apply should take about five minu
 ![](./images/04-tf-apply.png)
 
 #### For Enterprise Edition
-![](./images/08-enterprise-tf-apply.png)
+![](./images/08-tf-apply-enterprise.png)
 
 When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running.  Those will wrap up asynchronously.  The cluster might take ten minutes.  Now is a good time to get a coffee.
 
