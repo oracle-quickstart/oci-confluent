@@ -94,9 +94,15 @@ Add a few messages to the topic. I am using the REST API to publish 10 messages,
 Example:
     
     export RPURL=http://rest-0:8082
-    [opc@connect-0 log]# for i in {1..10} ;  do echo $i; curl -X POST -H "Content-Type: application/vnd.kafka.avro.v2+json"       -H "Accept: application/vnd.kafka.v2+json"       --data '{"key_schema": "{\"name\":\"user_id\"  ,\"type\": \"int\"   }", "value_schema": "{\"type\": \"record\", \"name\": \"User\", \"fields\": [{\"name\": \"name\", \"type\": \"string\"}]}", "records": [{"key" : 1 , "value": {"name": "testUser"}}]}'       $RPURL/topics/demo ;   done;
+    [opc@connect-0 log]# curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' $RPURL/topics/demo
  
 
 #### Consume Messages
-TBD
+Create consumer instance: 
+
+    curl -X POST -H "Content-Type: application/vnd.kafka.v1+json" --data '{"name": "ext_consumer_demo","format": "json", "auto.offset.reset": "smallest"}' $RPURL/consumers/c1
+
+Consume messages
+
+    curl -X GET -H "Accept: application/vnd.kafka.json.v1+json" $RPURL/consumers/c1/instances/ext_consumer_demo/topics/demo
 
