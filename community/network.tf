@@ -41,11 +41,6 @@ resource "oci_core_security_list" "security_list" {
   }]
 
   ingress_security_rules = [{
-    protocol = "All"
-    source = "${var.vpc-cidr}"
-  }]
-  
-  ingress_security_rules = [{
     tcp_options {
       "max" = 9092
       "min" = 9092
