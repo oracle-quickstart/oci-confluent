@@ -1,4 +1,4 @@
-# oci-confluent
+# oci-quickstart-confluent
 These are Terraform modules that deploy [Confluent Platform](https://www.confluent.io/product/confluent-platform/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure).  They are developed jointly by Oracle and Confluent.
 
 * [community](community) deploys the Community Edition
@@ -13,16 +13,16 @@ First off you'll need to do some pre deploy setup.  That's all detailed [here](h
 ## Clone the Module
 Now, you'll want a local copy of this repo.  You can make that with the commands:
 
-    git clone https://github.com/oci-quickstart/oci-confluent.git
+    git clone https://github.com/oracle/oci-quickstart-confluent.git
 
 If you want to deploy community edition:
 
-    cd oci-confluent/community
+    cd oci-quickstart-confluent/community
     ls
     
 If you want to deploy enterprise edition (comes with 30 day free trial):
 
-    cd oci-confluent/enterprise
+    cd oci-quickstart-confluent/enterprise
     ls
 
 ![](./images/01-git-clone.png)
@@ -63,12 +63,8 @@ The outputs of the deploy list the public ips of all the deployed instances.
 You can ssh into any of the instances by running a command like:
 `ssh -i ~/.ssh/oci opc@<instance ip>`
 
-
-
 ## Confluent Control Center (Only in Enterprise edition) 
 ![](./images/07-controlcenter.png)
-
-
 
 ## View the Cluster in OCI Console
 You can also login to the web console [here](https://console.us-phoenix-1.oraclecloud.com/a/compute/instances) to view the IaaS that is running from the
@@ -95,7 +91,6 @@ Example:
     
     export RPURL=http://rest-0:8082
     [opc@connect-0 log]# curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' $RPURL/topics/demo
- 
 
 #### Consume Messages
 Create consumer instance: 
@@ -105,4 +100,3 @@ Create consumer instance:
 Consume messages
 
     curl -X GET -H "Accept: application/vnd.kafka.json.v1+json" $RPURL/consumers/c1/instances/ext_consumer_demo/topics/demo
-
