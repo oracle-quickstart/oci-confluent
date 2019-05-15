@@ -51,19 +51,18 @@ If that's good, we can go ahead and apply the deploy:
 
 You'll need to enter `yes` when prompted.  The apply should take about five minutes to run.  Once complete, you'll see something like this:
 
-#### For Community Edition
 ![](./images/04-tf-apply.png)
-
-#### For Enterprise Edition
-![](./images/08-tf-apply-enterprise.png)
 
 When the apply is complete, the infrastructure will be deployed, but cloud-init scripts will still be running.  Those will wrap up asynchronously.  The cluster might take ten minutes.  Now is a good time to get a coffee.
 
 The outputs of the deploy list the public ips of all the deployed instances.
 You can ssh into any of the instances by running a command like:
-`ssh -i ~/.ssh/oci opc@<instance ip>`
 
-## Confluent Control Center (Only in Enterprise edition) 
+    ssh -i ~/.ssh/oci opc@<instance ip>
+
+## Confluent Control Center
+If you installed the enterprise version, you can login to Confluent Control Center.
+
 ![](./images/07-controlcenter.png)
 
 ## View the Cluster in OCI Console
@@ -76,27 +75,25 @@ Virtual Cloud Network (vcn) page:
 Instances page:
 ![](./images/06-instances.png)
 
-## Create Topic, Produce & Consume messages
-Let's test the cluster 
+## Create Topics, Produce and Consume Messages
+First off, let's try creating a topic.
 
-#### Create Topic
-Login to a broker instance:  ssh opc@<broker_instance>.   If you install Enterprise edition,  you can also create a topic through the Confluent Control Center Web Console.  
+Login to a broker instance:  
 
-    [opc@broker-0 opc]# /usr/bin/kafka-topics --zookeeper zookeeper-0:2181 --create --topic demo --partitions 1 --replication-factor 3
+    ssh opc@<broker_instance_ip>
 
-#### Produce Messages
-Add a few messages to the topic. I am using the REST API to publish 10 messages, so it can be done from any machine which has access to Kafka REST API endpoint. 
+Now create a topic by running the command  
 
-Example:
-    
+    /usr/bin/kafka-topics --zookeeper zookeeper-0:2181 --create --topic demo --partitions 1 --replication-factor 3
+
+Alternatively, if you installed Enterprise Edition, you can create a topic through the Confluent Control Center Web Console.
+
+Now we can try adding a few messages to the topic.  For instance, we can use the REST API to publish 10 messages.  This can be done from any machine which has access to Kafka REST API endpoint.  For example:
+
     export RPURL=http://rest-0:8082
-    [opc@connect-0 log]# curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' $RPURL/topics/demo
+    curl -X POST -H "Content-Type: application/vnd.kafka.json.v1+json"  --data '{"records":[{"value":{"foo":"bar"}}]}' $RPURL/topics/demo
 
-#### Consume Messages
-Create consumer instance: 
+Now let's trying consuming messages:
 
     curl -X POST -H "Content-Type: application/vnd.kafka.v1+json" --data '{"name": "ext_consumer_demo","format": "json", "auto.offset.reset": "smallest"}' $RPURL/consumers/c1
-
-Consume messages
-
     curl -X GET -H "Accept: application/vnd.kafka.json.v1+json" $RPURL/consumers/c1/instances/ext_consumer_demo/topics/demo
