@@ -58,6 +58,25 @@ resource "oci_core_security_list" "security_list" {
     source   = "${var.vpc-cidr}"
   }]
 
+
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 2888
+      "min" = 2888
+    }
+    protocol = "6"
+    source   = "${var.vpc-cidr}"
+  }]
+
+  ingress_security_rules = [{
+    tcp_options {
+      "max" = 3888
+      "min" = 3888
+    }
+    protocol = "6"
+    source   = "${var.vpc-cidr}"
+  }]
+
  ingress_security_rules = [{
     tcp_options {
       "max" = 8081
