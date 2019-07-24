@@ -11,6 +11,13 @@ brokerConfig="/etc/kafka/server.properties"
 sed -i "s/^zookeeper\.connect=localhost\:2181/zookeeper\.connect=$zookeeperConnect/g" $brokerConfig
 sed -i "s/^log.dirs=\/var\/lib\/kafka/log.dirs=\\$logDirs\/kafka/g" $brokerConfig
 
+
+# Listeners https://rmoff.net/2018/08/02/kafka-listeners-explained/
+# To get the public ip of current host 
+brokerPublicIP=`curl --retry 10 icanhazip.com`
+sed -i "s|#advertised.listeners=PLAINTEXT://your.host.name:9092|advertised.listeners=PLAINTEXT://$brokerPublicIP:9092|g"  $brokerConfig
+ 
+
 nodeIndex=`hostname | sed 's/broker-//'`
 echo "$nodeIndex"
 sed -i "s/^broker\.id=.*$/broker\.id=$nodeIndex/" $brokerConfig
@@ -39,5 +46,5 @@ chown cp-kafka:confluent $logDirs/kafka
 wait_for_zk_quorum
 
 echo "Starting Kafka Broker service"
-systemctl enable confluent-zookeeper
+systemctl enable confluent-kafka
 systemctl start confluent-kafka
