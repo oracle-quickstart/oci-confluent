@@ -61,11 +61,10 @@ Given below are pre-requisities to configure Kafka
 
 5. Restart Confluent Kafka Connect service 
 
-    systemctl daemon-reload
 
-    systemctl restart confluent-kafka-connect
-    
-    systemctl status confluent-kafka-connect
+        systemctl daemon-reload
+        systemctl restart confluent-kafka-connect
+        systemctl status confluent-kafka-connect
 
 
 
@@ -76,42 +75,42 @@ Given below are pre-requisities to configure Kafka
 
 1. Set a variable with Kafka Connect URL, example: 
     
-    export CONNECTURL=http://connect-0:8083
+        export CONNECTURL=http://connect-0:8083
 
 2. Create the jdbc connection url using information from Wallet file, example: 
 
-    "connection.url": "jdbc:oracle:thin:@adw_low?TNS_ADMIN=/oracle_credentials_wallet"
+        "connection.url": "jdbc:oracle:thin:@adw_low?TNS_ADMIN=/oracle_credentials_wallet"
 
 3. Identify the Kafka Topics which will be used as a source to write data to ADW/ATP, example:
 
-    "topics": "adw-sink"
+        "topics": "adw-sink"
 
 4. Identify the username and password to be used to connect to ADW/ATP, example 
     
-    "connection.user": "HR",
-    "connection.password": "Ora18abc!!",
+        "connection.user": "HR",
+        "connection.password": "Ora18abc!!",
 
 5. Use the above information to create the Kafka Connect JDBC Sink Connector using Kafka REST API call.   The below config will auto create a table, if it doesn't exist already.
 
-    export CONNECTURL=http://connect-0:8083
+        export CONNECTURL=http://connect-0:8083
  
-    curl -i -X POST -H "Accept:application/json"  -H  "Content-Type:application/json" $CONNECTURL/connectors/       -d '{
-    "name": "dbsink-adw",
-    "config": {
+        curl -i -X POST -H "Accept:application/json"  -H  "Content-Type:application/json" $CONNECTURL/connectors/       -d '{
         "name": "dbsink-adw",
-        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
-        "tasks.max": "1",
-        "topics": "adw-sink",
-        "connection.url": "jdbc:oracle:thin:@adw_low?TNS_ADMIN=/oracle_credentials_wallet",
-        "connection.user": "HR",
-        "connection.password": "Ora18abc!!",
-        "auto.create": "true",
-        "key.converter": "io.confluent.connect.avro.AvroConverter",
-        "value.converter": "io.confluent.connect.avro.AvroConverter",
-        "key.converter.schema.registry.url": "http://schema-registry-0:8081",
-        "value.converter.schema.registry.url": "http://schema-registry-0:8081"
-        }
-    }' 
+        "config": {
+            "name": "dbsink-adw",
+            "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+            "tasks.max": "1",
+            "topics": "adw-sink",
+            "connection.url": "jdbc:oracle:thin:@adw_low?TNS_ADMIN=/oracle_credentials_wallet",
+            "connection.user": "HR",
+            "connection.password": "Ora18abc!!",
+            "auto.create": "true",
+            "key.converter": "io.confluent.connect.avro.AvroConverter",
+            "value.converter": "io.confluent.connect.avro.AvroConverter",
+            "key.converter.schema.registry.url": "http://schema-registry-0:8081",
+            "value.converter.schema.registry.url": "http://schema-registry-0:8081"
+            }
+        }' 
 
 6. Using your preferred SQL tool,  run a query in your database to look for exported data. 
 
