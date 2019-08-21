@@ -1,7 +1,5 @@
-#Kafka Connect JDBC Sink Connector for Oracle Autonomous Data Warehouse (ADW) or Autonomous Transaction Procesing (ATP) databases
-You can use Kafka Connect JDBC Sink Connector to export data from Apache Kafka® topics to Oracle Autonomous Databases (ADW/ATP) or Oracle database. This document covers exporting to ADW/ATP. 
-
-The jdbc-sink connector comes pre-loaded with Confluent Kafka Community and Enterprise edition.  
+# Kafka Connect JDBC Sink Connector for Oracle Autonomous Data Warehouse (ADW) or Autonomous Transaction Procesing (ATP) databases
+You can use Kafka Connect JDBC Sink Connector to export data from Apache Kafka® topics to Oracle Autonomous Databases (ADW/ATP) or Oracle database. This document covers exporting to ADW/ATP. The jdbc-sink connector comes pre-loaded with Confluent Kafka Community and Enterprise edition.  
 
 ## Secure Connection to ADW/ATP using Wallet
 Connections to ATP/ADW are made over the public Internet. To secure any connection to ATP/ADW, it requires 
@@ -32,14 +30,16 @@ Example: wget https://objectstorage.us-phoenix-1.oraclecloud.com/p/hQUstt-JkH9n0
 3. Configure sqlnet.ora and confluent-kafka-connect service to use Wallet file.
 
 On each Kafka Connect node:
-sudo su  
-wallet_unzipped_folder=/oracle_credentials_wallet
-mkdir -p $wallet_unzipped_folder
-unzip -u /Wallet_ADW.zip -d $wallet_unzipped_folder
-chown -R  cp-kafka-connect:confluent $wallet_unzipped_folder
-sed -i -E 's|DIRECTORY=".*"|DIRECTORY="/oracle_credentials_wallet"|g'  $wallet_unzipped_folder/sqlnet.ora
-vim  /usr/lib/systemd/system/confluent-kafka-connect.service
-Environment=TNS_ADMIN=/oracle_credentials_wallet
+
+  sudo su  
+  wallet_unzipped_folder=/oracle_credentials_wallet
+  mkdir -p $wallet_unzipped_folder
+  unzip -u /Wallet_ADW.zip -d $wallet_unzipped_folder
+  chown -R  cp-kafka-connect:confluent $wallet_unzipped_folder
+  sed -i -E 's|DIRECTORY=".*"|DIRECTORY="/oracle_credentials_wallet"|g'  $wallet_unzipped_folder/sqlnet.ora
+  vim  /usr/lib/systemd/system/confluent-kafka-connect.service
+  Environment=TNS_ADMIN=/oracle_credentials_wallet
+
 
 4. Download the latest JDBC thin drivers to Kafka Connect nodes from here (https://www.oracle.com/technetwork/database/application-development/jdbc/downloads/jdbc-ucp-183-5013470.html).  Get the full Zipped JDBC Driver and Companion JARs. (ojdbc8-full.tar.gz)
 
@@ -62,7 +62,7 @@ systemctl status    confluent-kafka-connect
 4. You can check logs here (/var/log/messages) for any error message during restart of confluent-kafka-connect service
  
 
-##Configure and Load Kafka Connect JDBC Sink connector for ADW/ATP
+## Configure and Load Kafka Connect JDBC Sink connector for ADW/ATP
 
 1. Set a variable with Kafka Connect URL, example: 
 export CONNECTURL=http://connect-0:8083
