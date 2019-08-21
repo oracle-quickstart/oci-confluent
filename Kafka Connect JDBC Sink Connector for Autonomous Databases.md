@@ -14,9 +14,12 @@ A wallet contains a collection of files, including the key and other information
 connect to your database service in the ADW/ATP. 
 All communications between the client and the server are encrypted.
 
-For more details, refer to ADW documentation: Connecting to Autonomous Data Warehouse
-https://docs.oracle.com/en/cloud/paas/autonomous-data-warehouse-cloud/user/connect-data-warehouse.html#GUID-94719269-9218-4FAF-870E-6F0783E209FD
+For more details, refer to ADW documentation: [Connecting to Autonomous Data Warehouse](https://docs.oracle.com/en/cloud/paas/autonomous-data-warehouse-cloud/user/connect-data-warehouse.html#GUID-94719269-9218-4FAF-870E-6F0783E209FD).   The above is also applicable for ATP databases.  
 
+
+
+## Note
+The rest of the document showcases how to integrate Kafka with ADW as JDBC Sink target.  The same steps applies to ATP databases also. 
 
 
 ## Prerequisites
@@ -28,7 +31,7 @@ Given below are pre-requisities to configure Kafka
 
     Example:
     
-    wget https://objectstorage.us-phoenix-1.oraclecloud.com/p/hQUstt-JkH9n07EuXcdVk5FczNkM9bY0KOxTTCtjh_0/n/intmahesht/b/dbwallet/o/Wallet_ADW.zip
+        wget https://objectstorage.us-phoenix-1.oraclecloud.com/p/hQUstt-JkH9n07EuXcdVk5FczNkM9bY0KOxTTCtjh_0/n/intmahesht/b/dbwallet/o/Wallet_ADW.zip
 
 3. Configure sqlnet.ora and confluent-kafka-connect service to use Wallet file.
 
