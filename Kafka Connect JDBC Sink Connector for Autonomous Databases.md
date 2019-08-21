@@ -27,6 +27,7 @@ Given below are pre-requisities to configure Kafka
 2. Copy the wallet file to Kafka Connect nodes.  You can scp to the nodes from your local machine or upload the wallet file to OCI Object Storage, so it can be download to Kafka Connect nodes using [secure pre-authenticated request URL](https://docs.cloud.oracle.com/iaas/Content/Object/Tasks/usingpreauthenticatedrequests.htm)
 
     Example:
+    
     wget https://objectstorage.us-phoenix-1.oraclecloud.com/p/hQUstt-JkH9n07EuXcdVk5FczNkM9bY0KOxTTCtjh_0/n/intmahesht/b/dbwallet/o/Wallet_ADW.zip
 
 3. Configure sqlnet.ora and confluent-kafka-connect service to use Wallet file.
@@ -46,23 +47,27 @@ Given below are pre-requisities to configure Kafka
 
 4. Download the latest JDBC thin drivers to Kafka Connect nodes from [here](https://www.oracle.com/technetwork/database/application-development/jdbc/downloads/jdbc-ucp-183-5013470.html).  Get the full Zipped JDBC Driver and Companion JARs. (ojdbc8-full.tar.gz).  The below example assumes I copied the zip file to OCI Object storage for easy download to all nodes. 
 
-On each Kafka Connect node:
+    On each Kafka Connect node:
 
-    sudo su  
-    cd /usr/share/java/kafka-connect-jdbc
-    wget https://objectstorage.us-phoenix-1.oraclecloud.com/n/intmahesht/b/oracledrivers/o/ojdbc8-full.tar.gz
-    tar xvzf ./ojdbc8-full.tar.gz
-    cp ojdbc8-full/*.jar  ./
-    chmod 644 *.jar
-    rm -rf ojdbc8-full
-    rm -rf ojdbc8-full.tar.gz
+        sudo su  
+        cd /usr/share/java/kafka-connect-jdbc
+        wget https://objectstorage.us-phoenix-1.oraclecloud.com/n/intmahesht/b/oracledrivers/o/ojdbc8-full.tar.gz
+        tar xvzf ./ojdbc8-full.tar.gz
+        cp ojdbc8-full/*.jar  ./
+        chmod 644 *.jar
+        rm -rf ojdbc8-full
+        rm -rf ojdbc8-full.tar.gz
 
 
 5. Restart Confluent Kafka Connect service 
 
     systemctl daemon-reload
-    systemctl restart    confluent-kafka-connect
-    systemctl status    confluent-kafka-connect
+
+    systemctl restart confluent-kafka-connect
+    
+    systemctl status confluent-kafka-connect
+
+
 
 6. You can check logs here (/var/log/messages) for any error message during restart of confluent-kafka-connect service
  
