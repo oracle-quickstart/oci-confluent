@@ -1,2 +1,22 @@
 # Kafka Connect JDBC Sink Connector for Oracle Autonomous Data Warehouse (ADW) or Autonomous Transaction Procesing (ATP) databases
+You can use Kafka Connect JDBC Sink Connector to export data from Apache Kafka® topics to Oracle Autonomous Databases (ADW/ATP) or Oracle database. This document covers exporting to ADW/ATP. 
+
+The jdbc-sink connector comes pre-loaded with Confluent Kafka Community and Enterprise edition.  
+
+# Secure Connection to ADW/ATP using Wallet
+Connections to ATP/ADW are made over the public Internet. To secure any connection to ATP/ADW, it requires 
+client applications to uses certificate authentication and Secure Sockets Layer (SSL). 
+This ensures that there is no unauthorized access to the ADW/ATP and that communications between the client 
+and server are fully encrypted and cannot be intercepted or altered.
+
+Certification authentication uses an encrypted key stored in a wallet on both the client (where the application
+is running) and the server (where your database service on the ATP/ADW is running). 
+The key on the client must match the key on the server to make a connection. 
+A wallet contains a collection of files, including the key and other information needed to 
+connect to your database service in the ADW/ATP. 
+All communications between the client and the server are encrypted.
+
+
+# Prerequisites
+Given below are pre-requisities to configure Kafka
 
