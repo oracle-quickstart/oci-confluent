@@ -26,23 +26,21 @@ Given below are pre-requisities to configure Kafka
 
 2. Copy the wallet file to Kafka Connect nodes.  You can scp to the nodes from your local machine or upload the wallet file to OCI Object Storage, so it can be download to Kafka Connect nodes using [secure pre-authenticated request URL](https://docs.cloud.oracle.com/iaas/Content/Object/Tasks/usingpreauthenticatedrequests.htm)
 
-Example:
-
+    Example:
     wget https://objectstorage.us-phoenix-1.oraclecloud.com/p/hQUstt-JkH9n07EuXcdVk5FczNkM9bY0KOxTTCtjh_0/n/intmahesht/b/dbwallet/o/Wallet_ADW.zip
 
 3. Configure sqlnet.ora and confluent-kafka-connect service to use Wallet file.
 
-On each Kafka Connect node:
-
-
-    sudo su  
-    wallet_unzipped_folder=/oracle_credentials_wallet
-    mkdir -p $wallet_unzipped_folder
-    unzip -u /Wallet_ADW.zip -d $wallet_unzipped_folder
-    chown -R  cp-kafka-connect:confluent $wallet_unzipped_folder
-    sed -i -E 's|DIRECTORY=".*"|DIRECTORY="/oracle_credentials_wallet"|g'  $wallet_unzipped_folder/sqlnet.ora
-    vim  /usr/lib/systemd/system/confluent-kafka-connect.service
-    Environment=TNS_ADMIN=/oracle_credentials_wallet
+    On each Kafka Connect node:
+    
+        sudo su  
+        wallet_unzipped_folder=/oracle_credentials_wallet
+        mkdir -p $wallet_unzipped_folder
+        unzip -u /Wallet_ADW.zip -d $wallet_unzipped_folder
+        chown -R  cp-kafka-connect:confluent $wallet_unzipped_folder
+        sed -i -E 's|DIRECTORY=".*"|DIRECTORY="/oracle_credentials_wallet"|g'  $wallet_unzipped_folder/sqlnet.ora
+        vim  /usr/lib/systemd/system/confluent-kafka-connect.service
+        Environment=TNS_ADMIN=/oracle_credentials_wallet
 
 
 
