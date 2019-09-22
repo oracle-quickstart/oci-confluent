@@ -1,5 +1,5 @@
 # oci-quickstart-confluent
-These are Terraform modules that deploy [Confluent Platform](https://www.confluent.io/product/confluent-platform/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure).  They are developed jointly by Oracle and Confluent.
+These are Terraform modules that deploy [Confluent Platform](https://www.confluent.io/product/confluent-platform/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure).  They are developed jointly by Oracle and Confluent.  For instructions on how to use this material and details on getting support from the vendor that maintains this material, please contact them directly.
 
 * [community](community) deploys the Community Edition
 * [enterprise](enterprise) deploys the Enterprise Edition
