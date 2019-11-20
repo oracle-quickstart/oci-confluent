@@ -13,16 +13,16 @@ First off you'll need to do some pre deploy setup.  That's all detailed [here](h
 ## Clone the Module
 Now, you'll want a local copy of this repo.  You can make that with the commands:
 
-    git clone https://github.com/oracle/oci-quickstart-confluent.git
+    git clone https://github.com/oracle-quickstart/oci-confluent.git
 
 If you want to deploy community edition:
 
-    cd oci-quickstart-confluent/community
+    cd oci-confluent/community
     ls
     
 If you want to deploy enterprise edition (comes with 30 day free trial):
 
-    cd oci-quickstart-confluent/enterprise
+    cd oci-confluent/enterprise
     ls
 
 ![](./images/01-git-clone.png)
