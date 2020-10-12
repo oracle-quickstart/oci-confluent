@@ -5,16 +5,30 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 # Required by the OCI Provider
-variable "tenancy_ocid" {}
-variable "compartment_ocid" {}
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
-variable "region" {}
+variable "tenancy_ocid" {
+}
+
+variable "compartment_ocid" {
+}
+
+variable "user_ocid" {
+}
+
+variable "fingerprint" {
+}
+
+variable "private_key_path" {
+}
+
+variable "region" {
+}
 
 # Key used to SSH to OCI VMs
-variable "ssh_public_key" {}
-variable "ssh_private_key" {}
+variable "ssh_public_key" {
+}
+
+variable "ssh_private_key" {
+}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Optional variables
@@ -22,7 +36,7 @@ variable "ssh_private_key" {}
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "confluent" {
-  type = "map"
+  type = map(string)
   default = {
     edition = "Community"
     version = "5.1.2"
@@ -30,7 +44,7 @@ variable "confluent" {
 }
 
 variable "broker" {
-  type = "map"
+  type = map(string)
   default = {
     shape      = "VM.Standard2.4"
     node_count = 3
@@ -40,7 +54,7 @@ variable "broker" {
 }
 
 variable "zookeeper" {
-  type = "map"
+  type = map(string)
   default = {
     shape      = "VM.Standard2.2"
     node_count = 3
@@ -48,7 +62,7 @@ variable "zookeeper" {
 }
 
 variable "connect" {
-  type = "map"
+  type = map(string)
   default = {
     shape      = "VM.Standard2.2"
     node_count = 2
@@ -56,7 +70,7 @@ variable "connect" {
 }
 
 variable "rest" {
-  type = "map"
+  type = map(string)
   default = {
     shape      = "VM.Standard2.2"
     node_count = 2
@@ -64,22 +78,20 @@ variable "rest" {
 }
 
 variable "schema_registry" {
-  type = "map"
+  type = map(string)
   default = {
     shape      = "VM.Standard2.2"
     node_count = 1
   }
 }
 
-
 variable "ksql" {
-  type = "map"
+  type = map(string)
   default = {
     shape      = "VM.Standard2.1"
     node_count = 2
   }
 }
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Constants
@@ -89,7 +101,7 @@ variable "ksql" {
 // https://docs.cloud.oracle.com/iaas/images/image/66379f54-edd0-4294-895f-47291a3eb4ed/
 // Oracle-Linux-7.6-2019.02.20-0
 variable "images" {
-  type = "map"
+  type = map(string)
   default = {
     ca-toronto-1   = "ocid1.image.oc1.ca-toronto-1.aaaaaaaa7ac57wwwhputaufcbf633ojir6scqa4yv6iaqtn3u64wisqd3jjq"
     eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa527xpybx2azyhcz2oyk6f4lsvokyujajo73zuxnnhcnp7p24pgva"
@@ -99,4 +111,7 @@ variable "images" {
   }
 }
 
-variable "vpc-cidr" { default = "10.0.0.0/16" }
+variable "vpc-cidr" {
+  default = "10.0.0.0/16"
+}
+
