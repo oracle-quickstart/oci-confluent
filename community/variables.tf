@@ -39,7 +39,7 @@ variable "confluent" {
   type = map(string)
   default = {
     edition = "Community"
-    version = "5.1.2"
+    version = "6.0.0"
   }
 }
 
@@ -114,4 +114,3 @@ variable "images" {
 variable "vpc-cidr" {
   default = "10.0.0.0/16"
 }
-

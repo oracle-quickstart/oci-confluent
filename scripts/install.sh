@@ -47,14 +47,13 @@ enabled=1
 # Confluent Platform using only Confluent Community components
 yum clean all
 if [ $edition = "Enterprise" ]; then
-  package=`yum search confluent-platform | grep "confluent-platform-" | head -n 1 | gawk -F" " '{ print $1 }'`
-  packageVersion=`sudo yum --showduplicates list $package | grep $version | gawk -F" " '{ print $2 }'`  
+  package=`yum search confluent | grep "confluent-platform" | head -n 1 | gawk -F" " '{ print $1 }'`
+  packageVersion=`sudo yum --showduplicates list $package | grep $version | gawk -F" " '{ print $2 }'`
   packageWithVersion=`echo $package | sed "s|.noarch|-${version}-1.noarch|g"`
   yum install -y $packageWithVersion
 else
-  package=`yum search confluent-community | grep "confluent-community-" | head -n 1 | gawk -F" " '{ print $1 }'`
+  package=`yum search confluent | grep "confluent-community-" | head -n 1 | gawk -F" " '{ print $1 }'`
   packageVersion=`sudo yum --showduplicates list $package | grep $version | gawk -F" " '{ print $2 }'`
-  packageWithVersion=`echo $package | sed "s|.noarch|-${version}-1.noarch|g"` 
+  packageWithVersion=`echo $package | sed "s|.noarch|-${version}-1.noarch|g"`
   yum install -y $packageWithVersion
 fi
-
