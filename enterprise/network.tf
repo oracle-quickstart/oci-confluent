@@ -1,6 +1,3 @@
-data "oci_identity_availability_domains" "availability_domains" {
-  compartment_id = var.compartment_ocid
-}
 
 resource "oci_core_virtual_network" "virtual_network" {
   display_name   = "virtual_network"
@@ -130,7 +127,6 @@ resource "oci_core_security_list" "security_list" {
 resource "oci_core_subnet" "subnet" {
   display_name        = "subnet"
   compartment_id      = var.compartment_ocid
-  availability_domain = data.oci_identity_availability_domains.availability_domains.availability_domains[0]["name"]
   cidr_block          = "10.0.0.0/16"
   vcn_id              = oci_core_virtual_network.virtual_network.id
   route_table_id      = oci_core_route_table.route_table.id
@@ -138,4 +134,3 @@ resource "oci_core_subnet" "subnet" {
   dhcp_options_id     = oci_core_virtual_network.virtual_network.default_dhcp_options_id
   dns_label           = "confluent"
 }
-
