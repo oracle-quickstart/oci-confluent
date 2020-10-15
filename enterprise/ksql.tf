@@ -1,7 +1,7 @@
 resource "oci_core_instance" "ksql" {
   display_name        = "ksql-${count.index}"
   compartment_id      = var.compartment_ocid
-  availability_domain = data.oci_identity_availability_domains.availability_domains.availability_domains[0]["name"]
+  availability_domain = local.availability_domain
   shape               = var.ksql["shape"]
 
   #subnet_id           = "${oci_core_subnet.subnet.id}"

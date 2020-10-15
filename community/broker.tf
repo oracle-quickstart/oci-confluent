@@ -1,7 +1,7 @@
 resource "oci_core_instance" "broker" {
   display_name        = "broker-${count.index}"
   compartment_id      = var.compartment_ocid
-  availability_domain = data.oci_identity_availability_domains.availability_domains.availability_domains[0]["name"]
+  availability_domain = local.availability_domain
   shape               = var.broker["shape"]
   subnet_id           = oci_core_subnet.subnet.id
   fault_domain        = "FAULT-DOMAIN-${count.index % 3 + 1}"
@@ -44,7 +44,7 @@ resource "oci_core_instance" "broker" {
 
 resource "oci_core_volume" "broker" {
   count               = var.broker["node_count"] * var.broker["disk_count"]
-  availability_domain = data.oci_identity_availability_domains.availability_domains.availability_domains[0]["name"]
+  availability_domain = local.availability_domain
   compartment_id      = var.compartment_ocid
   display_name        = "broker${count.index % var.broker["node_count"]}-volume${floor(count.index / var.broker["node_count"])}"
   size_in_gbs         = var.broker["disk_size"]

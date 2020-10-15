@@ -35,6 +35,16 @@ variable "ssh_private_key" {
 # The defaults here will give you a cluster.  You can also modify these.
 # ---------------------------------------------------------------------------------------------------------------------
 
+variable "availability_domain_name" {
+  default     = ""
+  description = "Availability Domain name, if non-empty takes precedence over availability_domain_number"
+}
+
+variable "availability_domain_number" {
+  default     = 1
+  description = "OCI Availability Domains: 1,2,3  (subject to region availability)"
+}
+
 variable "confluent" {
   type = map(string)
   default = {

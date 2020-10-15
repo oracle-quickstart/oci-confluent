@@ -1,7 +1,7 @@
 resource "oci_core_instance" "rest" {
   display_name        = "rest-${count.index}"
   compartment_id      = var.compartment_ocid
-  availability_domain = data.oci_identity_availability_domains.availability_domains.availability_domains[0]["name"]
+  availability_domain = local.availability_domain
   shape               = var.rest["shape"]
   subnet_id           = oci_core_subnet.subnet.id
   fault_domain        = "FAULT-DOMAIN-${count.index % 3 + 1}"

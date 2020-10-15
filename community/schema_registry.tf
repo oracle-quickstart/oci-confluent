@@ -1,7 +1,7 @@
 resource "oci_core_instance" "schema_registry" {
   display_name        = "schema_registry-${count.index}"
   compartment_id      = var.compartment_ocid
-  availability_domain = data.oci_identity_availability_domains.availability_domains.availability_domains[0]["name"]
+  availability_domain = local.availability_domain
   shape               = var.broker["shape"]
   subnet_id           = oci_core_subnet.subnet.id
   fault_domain        = "FAULT-DOMAIN-${count.index % 3 + 1}"
